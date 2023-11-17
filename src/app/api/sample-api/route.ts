@@ -10,3 +10,4 @@ export default function POST(
 ) {
   res.status(200).json({ message: 'success request API!' });
 }
+//this is  just the  example do not use it

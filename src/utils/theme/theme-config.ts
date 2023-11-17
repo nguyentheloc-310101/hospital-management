@@ -3,7 +3,8 @@ import type { ThemeConfig } from 'antd';
 const themeConfig: ThemeConfig = {
   token: {
     // borderRadius: 8,
-    colorPrimary: '#3370FF',
+    colorText: '#143d55',
+    colorPrimary: '#169fed',
   },
   components: {},
 };

@@ -1,7 +1,5 @@
 'use client';
-
 import { supabase } from '@/services/supabase/supabase-client';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -36,21 +34,7 @@ export default function Login() {
 
   return (
     <div className="flex h-full w-full items-center justify-center">
-      {/* <input
-        name="email"
-        onChange={(e) => setEmail(e.target.value)}
-        value={email}
-      />
-      <input
-        type="password"
-        name="password"
-        onChange={(e) => setPassword(e.target.value)}
-        value={password}
-      />
-      <button onClick={handleSignUp}>Sign up</button>
-      <button onClick={handleSignIn}>Sign in</button>
-      <button onClick={handleSignOut}>Sign out</button> */}
-      login UI
+      login UI - read file readme for announcement
     </div>
   );
 }
