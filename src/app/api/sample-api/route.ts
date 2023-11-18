@@ -1,13 +1,12 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
-
+import type { NextApiRequest, NextApiResponse } from 'next'
+ 
 type ResponseData = {
-  message: string;
-};
-
-export default function POST(
+  message: string
+}
+ 
+export default function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
-  res.status(200).json({ message: 'success request API!' });
+  res.status(200).json({ message: 'Hello from Next.js!' })
 }
-//this is  just the  example do not use it
