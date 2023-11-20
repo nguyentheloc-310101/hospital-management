@@ -1,8 +1,5 @@
 'use client';
-import React, { useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
 import {
-  AppstoreOutlined,
   ContainerOutlined,
   MedicineBoxOutlined,
   MenuFoldOutlined,
@@ -11,11 +8,10 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { Button, Layout, Menu, MenuProps, theme } from 'antd';
-import Image from 'next/image';
-import { logo } from '@/constants/logo';
-import staticLogo from '../../../public/images/logo.png';
+import { usePathname, useRouter } from 'next/navigation';
+import React, { useState } from 'react';
 
-const { Header, Content, Footer, Sider } = Layout;
+const { Header, Content, Sider } = Layout;
 
 export default function DashboardLayout({
   children,
