@@ -92,7 +92,9 @@ export default function DashboardLayout({
             onClick={() => {
               router.push('/');
             }}
-            className="cursor-pointer">
+            className={`cursor-pointer ${
+              collapsed ? 'hidden' : 'lg:block hidden'
+            } `}>
             Logo here
           </div>
           <Button
