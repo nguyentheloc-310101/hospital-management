@@ -45,9 +45,9 @@ export default function DashboardLayout({
       label: 'Treatments',
     },
     {
-      key: '/dashboard/doctors',
+      key: '/dashboard/employees',
       icon: <MedicineBoxOutlined />,
-      label: 'Doctors',
+      label: 'Employees',
     },
     {
       key: '/dashboard/patients',
