@@ -9,7 +9,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Layout, Menu, MenuProps, theme } from 'antd';
 import { usePathname, useRouter } from 'next/navigation';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 const { Header, Content, Sider } = Layout;
 
@@ -23,8 +23,11 @@ export default function DashboardLayout({
   } = theme.useToken();
   const router = useRouter();
   const pathname = usePathname();
-
   const [collapsed, setCollapsed] = useState(false);
+  const [headerName, setHeaderName] = useState<string>('');
+  useEffect(() => {
+    setHeader();
+  }, [pathname]);
 
   const items: MenuProps['items'] = [
     {
@@ -55,7 +58,17 @@ export default function DashboardLayout({
       label: 'Patients',
     },
   ];
-
+  const setHeader = () => {
+    if (pathname == '/dashboard/treatments') {
+      setHeaderName('treatments management');
+    } else if (pathname == '/dashboard/patients') {
+      setHeaderName('patients management');
+    } else if (pathname == '/dashboard/employees') {
+      setHeaderName('employees information');
+    } else {
+      return;
+    }
+  };
   const onClick = (e: any) => {
     if (!e) return;
     router.push(e.key, { scroll: false });
@@ -63,9 +76,11 @@ export default function DashboardLayout({
 
   const handleMenuClick: MenuProps['onClick'] = (e: any) => {
     if (!e) return;
+
     if (e.key == '/login') {
       localStorage.clear();
     }
+    setHeader();
     router.push(e.key, { scroll: false });
   };
 
@@ -121,10 +136,14 @@ export default function DashboardLayout({
         />
       </Sider>
       <Layout>
-        <Header style={{ padding: 0, background: colorBgContainer }} />
+        <Header
+          style={{ padding: 0, background: colorBgContainer }}
+          className="uppercase font-bold lg:text-[18px] text-[12px]">
+          {headerName}
+        </Header>
         <Content
           style={{
-            height: 'calc(100vh - 114px)',
+            height: 'calc(100vh - 174px)',
             overflow: 'scroll',
             backgroundColor: '#F2F3F5',
           }}>

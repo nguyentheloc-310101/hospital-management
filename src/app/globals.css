@@ -16,9 +16,3 @@
 html {
   scroll-behavior: smooth;
 }
-body {
-  display: block;
-  margin: auto;
-  max-width: 1920px;
-  font-weight: 400;
-}
