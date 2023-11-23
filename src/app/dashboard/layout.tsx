@@ -144,6 +144,7 @@ export default function DashboardLayout({
         </Header>
         <Content
           style={{
+            padding: '8px',
             height: '',
             overflow: 'scroll',
             backgroundColor: '#F2F3F5',
