@@ -1,13 +1,15 @@
-import { Card } from 'antd';
+import { SearchOutlined } from '@ant-design/icons';
+import { Card, Input } from 'antd';
 import React from 'react';
 
 const HeaderTreatment = () => {
   return (
     <div>
-      <Card>
-        <div className="uppercase font-bold lg:text-[18px] text-[12px] rounded-t-[8px] rounded-b-0">
-          Treatment management
+      <Card className="flex items-center justify-between">
+        <div className="">
+          <Input suffix={<SearchOutlined />} />
         </div>
+        <div></div>
       </Card>
     </div>
   );
