@@ -93,12 +93,13 @@ export default function DashboardLayout({
     setCollapsed(!collapsed);
   };
   return (
-    <Layout className="h-fit">
+    <Layout className="max-h-[1440px]">
       <Sider
         breakpoint="lg"
         collapsedWidth="4rem"
         trigger={null}
         collapsible
+        style={{ backgroundColor: '#fff', height: '100vh' }}
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}>
         <div
@@ -128,28 +129,28 @@ export default function DashboardLayout({
           theme="light"
           mode="inline"
           onClick={onClick}
-          className="h-full"
+          className=""
           defaultSelectedKeys={[pathname]}
           defaultOpenKeys={['dashboard/']}
           activeKey={pathname}
           items={itemsSideBar}
         />
       </Sider>
-      <Layout>
+      <div className="w-full">
         <Header
-          style={{ padding: 0, background: colorBgContainer }}
-          className="uppercase font-bold lg:text-[18px] text-[12px]">
+          style={{ padding: 0 }}
+          className="uppercase font-bold w-full lg:text-[18px] text-[12px] bg-[white] relative top-0">
           {headerName}
         </Header>
         <Content
           style={{
-            height: 'calc(100vh - 174px)',
+            height: '',
             overflow: 'scroll',
             backgroundColor: '#F2F3F5',
           }}>
           {children}
         </Content>
-      </Layout>
+      </div>
     </Layout>
   );
 }
