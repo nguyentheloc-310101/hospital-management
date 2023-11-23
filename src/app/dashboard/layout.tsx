@@ -93,7 +93,7 @@ export default function DashboardLayout({
     setCollapsed(!collapsed);
   };
   return (
-    <Layout className="max-h-[1440px]">
+    <Layout className="max-h-[1440px] overflow-hidden">
       <Sider
         breakpoint="lg"
         collapsedWidth="4rem"
@@ -145,7 +145,7 @@ export default function DashboardLayout({
         <Content
           style={{
             padding: '8px',
-            height: '',
+            height: '100%',
             overflow: 'scroll',
             backgroundColor: '#F2F3F5',
           }}>
