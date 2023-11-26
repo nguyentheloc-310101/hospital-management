@@ -20,6 +20,9 @@ const columns = [
         title: 'Address'
     },
     {
+        title: 'Phone number'
+    },
+    {
         title: 'Degree'
     },
     {
@@ -33,7 +36,8 @@ const columns = [
     },
     {
         title: 'Department Name'
-    }
+    },
+
 
 
 
@@ -70,7 +74,7 @@ const columns = [
 //         key: 'address',
 //     },
 // ];
-const AddModal = () => {
+const EmployeeTable = () => {
     return (
         <>
             <Table  columns={columns}/>
@@ -78,4 +82,4 @@ const AddModal = () => {
     );
 };
 
-export default AddModal;
+export default EmployeeTable;
