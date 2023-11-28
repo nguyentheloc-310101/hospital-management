@@ -37,7 +37,7 @@ const DoctorsPage = () => {
     };
 
     const showModal = () => {
-        setModalVisible(true);
+        setModalVisible(true);  
     };
 
     const handleCancel = () => {
