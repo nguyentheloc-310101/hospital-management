@@ -1,9 +1,18 @@
-import React from 'react';
+'use client';
+import { LoadingOutlined } from '@ant-design/icons';
+import { useRouter } from 'next/navigation';
+import React, { useEffect } from 'react';
 export default function Home() {
-  //check auth : -> push route login ->dashboard
+  const router = useRouter();
+  useEffect(() => {
+    checkAuthRole();
+  }, []);
+  const checkAuthRole = () => {
+    router.push('/dashboard/treatments');
+  };
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      this is main page no auth
+    <main className="w-full h-[100vh] flex items-center justify-center">
+      <LoadingOutlined />
     </main>
   );
 }
