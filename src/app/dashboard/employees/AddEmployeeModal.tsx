@@ -8,7 +8,9 @@ import useItems from 'antd/es/menu/hooks/useItems';
 
 const { Title } = Typography;
 //TODO: fix -> gom vao props
+  //TODO: lay het record tu supabase ve xong roi console.log ra.
 
+  //TODO: tao zustand (store) luu cac thong tin employee fetch ve./
 interface AddEmployeeModalProps {
   open: boolean;
   onCancel: any;
@@ -23,7 +25,8 @@ const AddEmployeeModal = ({
   confirmLoading,
 }: AddEmployeeModalProps) => {
   // const [id, setID] = React.useState('');
-  const [name, setName] = React.useState('');
+  const [fname, setFName] = React.useState('');
+  const [lname, setLName] = React.useState('');
   const [birthdate, setBirthdate] = React.useState<any | null>(null);
   const [startDate, setStartDate] = React.useState<any | null>(null);
   const [gender, setGender] = React.useState<any | null>(null);
@@ -130,11 +133,17 @@ const AddEmployeeModal = ({
         placeholder={'Enter ID'}
       /> */}
       
-      <Title level={5}>Name</Title>
+      <Title level={5}>First Name</Title>
       <Input
-        value={name}
-        onChange={(e) => setName(e.target.value)}
-        placeholder={'Enter full name'}
+        value={fname}
+        onChange={(e) => setFName(e.target.value)}
+        placeholder={'Enter first name'}
+      />
+      <Title level={5}>Last Name</Title>
+      <Input
+        value={lname}
+        onChange={(e) => setLName(e.target.value)}
+        placeholder={'Enter last name'}
       />
       <Title level={5}>Birthdate</Title>
       <DatePicker

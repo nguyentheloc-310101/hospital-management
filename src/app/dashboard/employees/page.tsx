@@ -27,8 +27,9 @@ const items = [
 const DoctorsPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const detailStatus = searchParams.get('details');
-  const currentId = searchParams.get('id');
+  // const detailStatus = searchParams.get('details');
+  // const currentId = searchParams.get('id'); 
+  // * This searchParams should be used when query detail info
 
   const [modalVisible, setModalVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
