@@ -1,7 +1,7 @@
 // DoctorsPage.js
 'use client';
 import React, { useState } from 'react';
-import { Card, Col, FloatButton, Input, Tabs, Typography } from 'antd';
+import { Button, Card, Col, FloatButton, Input, Tabs, Typography } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
 import AddEmployeeModal from './AddEmployeeModal';
 import EmployeeTable from '@/app/dashboard/employees/EmployeeTable'; // Import the new component
@@ -62,13 +62,7 @@ const DoctorsPage = () => {
           title={'EMPLOYEES INFORMATION'}
           extra={
             <>
-              <Search
-                placeholder="input search text"
-                style={{ width: 200 }}
-                onSearch={() => {
-                  console.log('Search clicked');
-                }}
-              />
+              <Button type='dashed' icon={<UserAddOutlined />} onClick={showModal}>Add employee</Button>
               {/*    can add some components here*/}
             </>
           }>
@@ -84,6 +78,7 @@ const DoctorsPage = () => {
             ))}
           </Tabs> */}
           <EmployeeTable />
+          
           <AddEmployeeModal
             open={modalVisible}
             onCancel={handleCancel}
@@ -92,11 +87,7 @@ const DoctorsPage = () => {
           />
         </Card>
       </Col>
-      <FloatButton
-        className={'bg-sky-500'}
-        tooltip={<>Add employee</>}
-        icon={<UserAddOutlined />}
-        onClick={showModal}></FloatButton>
+    
     </>
   );
 };

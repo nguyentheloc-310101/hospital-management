@@ -5,6 +5,7 @@ import { Dropdown, Input, Menu, MenuProps, Modal, Typography } from 'antd';
 import { DatePicker } from 'antd/lib';
 import { DownOutlined } from '@ant-design/icons';
 import useItems from 'antd/es/menu/hooks/useItems';
+import { supabase } from '@supabase/auth-ui-shared';
 
 const { Title } = Typography;
 //TODO: fix -> gom vao props

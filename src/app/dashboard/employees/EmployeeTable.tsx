@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Table } from 'antd';
 import { supabase } from '@/services/supabase/supabase-client';
+import { error } from 'console';
+import { Alert } from 'antd';
 const columns = [
   {
     title: 'Unique Code',
@@ -84,12 +86,21 @@ const EmployeeTable = () => {
   //     router.push(`/dashboard/employees/id=${id}&details=false`);
   //   }
   // };
+  const [fetchError, setFetchError] = React.useState<any>(null)
   const [data, setData] = React.useState<any>([])
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await supabase.from('employee').select();
-      setData(data);
+      const { data,error} = await supabase.from('employee').select();
+      if(data)
+        setData(data);
+        setFetchError(null);
+      if(error)
+      {
+        const errorMessage = error.message || "An error occured"
+        setFetchError(errorMessage)
+      }
     };
+    
 
     fetchData();
   }, []); 
@@ -115,6 +126,11 @@ const EmployeeTable = () => {
         dataSource={data}
       /> */}
       <Table dataSource={data} columns={columns}></Table>
+      {
+        fetchError && (
+          <Alert message={fetchError} type='error'></Alert> //? conditional rendering? 
+        )
+      }
     </>
   );
 };
