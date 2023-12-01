@@ -1,8 +1,9 @@
 import { CustomTable } from '@/components/common/table/TableCustom';
+import { TableTreatmentProps } from '@/types/props';
 import { ColumnsType } from 'antd/es/table';
 import React from 'react';
 
-const TableTreatment = () => {
+const TableTreatment = ({ loading, dataSource }: TableTreatmentProps) => {
   const columns: ColumnsType<any> = [
     {
       title: 'ID',
@@ -20,12 +21,6 @@ const TableTreatment = () => {
       key: 'áds',
     },
 
-    //   {
-    //     title: 'Địa điểm',
-    //     dataIndex: 'resources',
-    //     key: 'resources',
-    //   },
-
     {
       title: 'Doctor',
       dataIndex: 'doctor',
@@ -41,8 +36,8 @@ const TableTreatment = () => {
     <div className="">
       <CustomTable
         columns={columns}
-        dataSource={[]}
-        loading={false}
+        dataSource={dataSource}
+        loading={loading}
       />
     </div>
   );
