@@ -1,31 +1,26 @@
 // AddEmployeeModal.js
 
 import React from 'react';
-import { Dropdown, Input, Menu, MenuProps, Modal, Typography } from 'antd';
+import { Alert, Dropdown, Input, Menu, MenuProps, Modal, Typography } from 'antd';
 import { DatePicker } from 'antd/lib';
 import { DownOutlined } from '@ant-design/icons';
-import useItems from 'antd/es/menu/hooks/useItems';
-import { supabase } from '@supabase/auth-ui-shared';
 
+import { useState } from 'react';
+import { Button } from 'antd/lib/radio';
+import { UserAddOutlined } from '@ant-design/icons';
+import { useSearchParams } from 'next/navigation';
+import { supabase } from '@/services/supabase/supabase-client';
 const { Title } = Typography;
 //TODO: fix -> gom vao props
   //TODO: lay het record tu supabase ve xong roi console.log ra.
 
   //TODO: tao zustand (store) luu cac thong tin employee fetch ve./
-interface AddEmployeeModalProps {
-  open: boolean;
-  onCancel: any;
-  onOk: any;
-  confirmLoading: boolean;
-}
 
-const AddEmployeeModal = ({
-  open,
-  onCancel,
-  onOk,
-  confirmLoading,
-}: AddEmployeeModalProps) => {
-  // const [id, setID] = React.useState('');
+
+const AddEmployeeModal = () => {
+
+  const [id, setID] = React.useState('');
+  
   const [fname, setFName] = React.useState('');
   const [lname, setLName] = React.useState('');
   const [birthdate, setBirthdate] = React.useState<any | null>(null);
@@ -37,6 +32,7 @@ const AddEmployeeModal = ({
   const [degreeYear, setDegreeYear] = React.useState<any | null>(null);
   const [role, setRole] = React.useState<any | null>(null);
   const [department, setDepartment] = React.useState<any | null>(null);
+  const [insertError,setInsertError] = React.useState<any|null>(null);
   const genders: MenuProps['items'] = [
     {
       label: 'Male',
@@ -117,22 +113,88 @@ const AddEmployeeModal = ({
     const selectedDepartment = e.key === 'notStated' ? null : e.key;
     setDepartment(selectedDepartment);
   };
+
+  const [modalVisible, setModalVisible] = useState(false);
+  const [confirmLoading, setConfirmLoading] = useState(false);
+  const handleSubmit = async (e:any)=>
+  {
+     
+
+      if(!fname || !id) //in case of inserting null to non null
+      {
+          setInsertError("First name or id cannot be set blank")
+          console.log(insertError)
+          return
+      }
+      
+      const {data, error} = await supabase
+      .from('emeployee')
+      .update({fname,lname,birthdate,gender,address,degree,degreeYear,startDate,role, department})
+      .select()
+
+      if(error)
+      {
+        console.log(error)
+        setInsertError(error)
+
+      }
+      if(data)
+      {
+          console.log(data)
+          setInsertError(null)
+          handleCancel()
+      }
+
+  }
+  const handleOk = () => {
+    setConfirmLoading(true);
+    setTimeout(() => {
+      setModalVisible(false);
+      setConfirmLoading(false);
+      handleSubmit("")
+      // This is where to handle the adding states to the database.
+    }, 2000);
+    
+  
+  };
+  const showModal = () => {
+    setModalVisible(true);
+  };
+
+  const handleCancel = () => {
+    setModalVisible(false);
+  };
+
   return (
+    <>
+      <Button
+      
+        type="primary"
+        onClick={showModal}
+        
+      >
+        {<UserAddOutlined/>} Add Employee
+      </Button>
     <Modal
       title={'Add employee'}
-      open={open}
-      onCancel={onCancel}
-      onOk={onOk}
+      open={modalVisible}
+      onCancel={handleCancel}
+      onOk={handleOk}
       okText={'Add'}
       okButtonProps={{ style: { backgroundColor: '#16ABF2' } }}
       confirmLoading={confirmLoading}>
         
-      {/*<Title level={5}>ID</Title> // * NO NEED FOR ID 
+      <Title level={5}>ID</Title> 
+      {
+        insertError && (
+          <Alert message={insertError} type='error'></Alert>
+        )
+      }
       <Input
         value={id}
         onChange={(e) => setID(e.target.value)}
         placeholder={'Enter ID'}
-      /> */}
+      /> 
       
       <Title level={5}>First Name</Title>
       <Input
@@ -213,9 +275,10 @@ const AddEmployeeModal = ({
                 trigger={['click']}
                 icon={<DownOutlined/>}
             >
-                {department === null ? 'Not Stated' : department || 'Select Role'}
+                {department === null ? 'Not Stated' : department || 'Select Department'}
             </Dropdown.Button>
     </Modal>
+    </>
   );
 };
 

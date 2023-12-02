@@ -93,6 +93,7 @@ const EmployeeTable = () => {
       const { data,error} = await supabase.from('employee').select();
       if(data)
         setData(data);
+        console.log(data) //! for testing
         setFetchError(null);
       if(error)
       {

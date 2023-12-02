@@ -31,30 +31,15 @@ const DoctorsPage = () => {
   // const currentId = searchParams.get('id'); 
   // * This searchParams should be used when query detail info
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const [confirmLoading, setConfirmLoading] = useState(false);
+ 
   const [activeDetail, setActiveDetail] = useState(false);
-  const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
-      setModalVisible(false);
-      setConfirmLoading(false);
-      // This is where to handle the adding states to the database.
-    }, 2000);
-  };
+  
 
   //useEffect (()=>{},[Name])
   //tao zustand (store) luu cac thong tin employee fetch ve
 
 
-  const showModal = () => {
-    setModalVisible(true);
-  };
-
-  const handleCancel = () => {
-    setModalVisible(false);
-  };
-
+  
   return (
     <>
       <Col className={'mt-2 ml-1 mr-1'}>
@@ -62,7 +47,7 @@ const DoctorsPage = () => {
           title={'EMPLOYEES INFORMATION'}
           extra={
             <>
-              <Button type='dashed' icon={<UserAddOutlined />} onClick={showModal}>Add employee</Button>
+              <AddEmployeeModal/>
               {/*    can add some components here*/}
             </>
           }>
@@ -79,12 +64,7 @@ const DoctorsPage = () => {
           </Tabs> */}
           <EmployeeTable />
           
-          <AddEmployeeModal
-            open={modalVisible}
-            onCancel={handleCancel}
-            onOk={handleOk}
-            confirmLoading={confirmLoading}
-          />
+          
         </Card>
       </Col>
     
