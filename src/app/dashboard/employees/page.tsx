@@ -1,16 +1,17 @@
+// DoctorsPage.js
 'use client';
-
-import React from 'react';
-import { Card, Col, FloatButton, Input, Tabs, TabsProps } from 'antd';
+import React, { useState } from 'react';
+import { Button, Card, Col, FloatButton, Input, Tabs, Typography } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
-import AddModal from '@/app/dashboard/employees/AddModal';
+import AddEmployeeModal from './AddEmployeeModal';
+import EmployeeTable from '@/app/dashboard/employees/EmployeeTable'; // Import the new component
+import { useRouter, useSearchParams } from 'next/navigation';
 
+const { Title } = Typography;
 const { Search } = Input;
-const onChange = (key: string) => {
-  console.log({ key } + ' clicked');
-};
+const { TabPane } = Tabs;
 
-let items: TabsProps['items'] = [
+const items = [
   {
     key: 'active',
     label: 'Active',
@@ -22,7 +23,23 @@ let items: TabsProps['items'] = [
     children: null,
   },
 ];
+
 const DoctorsPage = () => {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  // const detailStatus = searchParams.get('details');
+  // const currentId = searchParams.get('id'); 
+  // * This searchParams should be used when query detail info
+
+ 
+  const [activeDetail, setActiveDetail] = useState(false);
+  
+
+  //useEffect (()=>{},[Name])
+  //tao zustand (store) luu cac thong tin employee fetch ve
+
+
+  
   return (
     <>
       <Col className={'mt-2 ml-1 mr-1'}>
@@ -30,28 +47,27 @@ const DoctorsPage = () => {
           title={'EMPLOYEES INFORMATION'}
           extra={
             <>
-              <Search
-                placeholder="input search text"
-                style={{ width: 200 }}
-                onSearch={() => {
-                  console.log('Search clicked');
-                }}
-              />
+              <AddEmployeeModal/>
               {/*    can add some components here*/}
             </>
           }>
-          <Tabs
+          {/* <Tabs
             defaultActiveKey={'active'}
-            items={items}
-            onChange={onChange}
-          />
-          <AddModal></AddModal>
+            onChange={() => {}}>
+            {items.map((item) => (
+              <TabPane
+                tab={item.label}
+                key={item.key}>
+                {item.children}
+              </TabPane>
+            ))}
+          </Tabs> */}
+          <EmployeeTable />
+          
+          
         </Card>
       </Col>
-      <FloatButton
-        className={'bg-sky-500'}
-        icon={<UserAddOutlined />}
-        onClick={() => console.log('Add button clicked')}></FloatButton>
+    
     </>
   );
 };
