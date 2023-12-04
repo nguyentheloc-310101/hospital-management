@@ -70,6 +70,13 @@ const columns = [
     key: 'DeptCode',
     sorter: (a:any, b:any)=> a.DeptCode.localeCompare(b.DeptCode),
   },
+  {
+    title: 'Department',
+    dataIndex: 'departmentTitleColumn', // ! i was trying to fetch the department's name, but it didnt work
+    key: 'Title',
+    // sorter: (a:any, b:any)=> a.Title.localeCompare(b.Title),
+  },
+
 ];
 
 
@@ -87,18 +94,19 @@ const EmployeeTable = () => {
   //   }
   // };
   const [fetchError, setFetchError] = React.useState<any>(null)
-  const [data, setData] = React.useState<any>([])
+  const [data, setData] = React.useState<any >([])
   useEffect(() => {
     const fetchData = async () => {
-      const { data,error} = await supabase.from('employee').select();
+      const { data,error} = await supabase.from('employee').select('*,department:DeptCode(Title)' ) // ! query based on equal DeptCode 
       if(data)
         setData(data);
         console.log(data) //! for testing
+        
         setFetchError(null);
       if(error)
       {
         const errorMessage = error.message || "An error occured"
-        setFetchError(errorMessage)
+        setFetchError(errorMessage) 
       }
     };
     

@@ -1,23 +1,60 @@
+'use client'
 import { CustomTable } from '@/components/common/table/TableCustom';
 import { ColumnsType } from 'antd/es/table';
-import React from 'react';
-
+import React, { useEffect } from 'react';
+import { supabase } from '@/services/supabase/supabase-client';
+import { escape } from 'querystring';
 const TableTreatment = () => {
+  const[treatmentFetchError,setTreatmentFetchError] = React.useState<any|null>(null)
+  const[treatmentData,setTreatmentData] = React.useState<any|null>([])
+  useEffect(
+    ()=>{
+      const fetchTreatment = async ()=>
+      {
+            
+            const {data,error} = await supabase.from('treatment').select()
+            if(!error)
+            {
+              setTreatmentData(data)
+              setTreatmentFetchError(null)
+              console.log(treatmentData)
+            }
+            else
+            {
+              setTreatmentData(null)
+              setTreatmentFetchError(error)
+              console.log(treatmentFetchError) // ! for testing
+            }
+
+      }
+      fetchTreatment()
+      },[]
+  )
   const columns: ColumnsType<any> = [
     {
-      title: 'ID',
-      dataIndex: '',
-      key: 'kss',
+      title: 'Patient Code',
+      dataIndex: 'PCode',
+      key: 'Pcode',
     },
     {
-      title: 'Treatment',
-      dataIndex: 'visitor_image',
-      key: 'kk',
+      title: 'Treatment code',
+      dataIndex: 'TreatCode',
+      key: 'TreatCode',
     },
     {
-      title: 'Time',
-      dataIndex: 'date_time_request',
-      key: 'áds',
+      title: 'Start Date',
+      dataIndex: 'StartDate',
+      key: 'StartDate',
+    },
+    {
+      title: 'End Date',
+      dataIndex: 'EndDate',
+      key: 'EndDate',
+    },
+    {
+      title: 'Result',
+      dataIndex: 'Result',
+      key: 'Result',
     },
 
     //   {
@@ -26,22 +63,12 @@ const TableTreatment = () => {
     //     key: 'resources',
     //   },
 
-    {
-      title: 'Doctor',
-      dataIndex: 'doctor',
-      key: 'doctor',
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'Status',
-    },
   ];
   return (
     <div className="">
       <CustomTable
         columns={columns}
-        dataSource={[]}
+        dataSource={treatmentData}
         loading={false}
       />
     </div>
