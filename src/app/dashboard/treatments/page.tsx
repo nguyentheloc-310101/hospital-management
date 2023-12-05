@@ -7,77 +7,81 @@ import { message } from 'antd';
 import React, { useEffect, useState } from 'react';
 
 const TreatmentPage = () => {
-  const [dataTreatment, setDataTreatment] = useState<any[]>([]);
-  const [dataInPatient, setDataInpatient] = useState<any[]>([]);
-  const [dataDoctor, setDataDoctor] = useState<any[]>([]);
-
   const { setAllTreatment } = useTreatment();
+  const [dataSource, setDataSource] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
-    fetchDataTreatment();
-    fetchDataInpatient();
-    fetchDataDoctor();
+    fetchDataTreat();
   }, []);
   //fetch all treatment
-  const fetchDataTreatment = async () => {
+  const fetchDataTreat = async () => {
     setLoading(true);
     try {
-      const { data, error } = await supabase.from('treatment').select('*');
-      if (error) {
-        message.error('error fetching data treatment');
+      //*fetch all data treatment_use*//
+      const { data: allTreatUse, error: errTreatUse } = await supabase
+        .from('treatment_use')
+        .select('*,medication(*)');
+
+      if (errTreatUse) {
+        message.error(errTreatUse.message);
         setLoading(false);
         return;
       }
-      if (data) {
-        setAllTreatment(data);
-        setDataTreatment(data);
-        console.log('treatment', data);
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
-  //fetch all inPatient
-  const fetchDataInpatient = async () => {
-    setLoading(true);
-    try {
-      const { data, error } = await supabase.from('inpatient').select('*');
-      if (error) {
-        message.error('error fetching data inpatient');
+      //*fetch all data treat*//
+      const { data: allTreats, error: errTreats } = await supabase
+        .from('treat')
+        .select('*,DCode(*)');
+      if (errTreats) {
+        message.error(errTreats.message);
         setLoading(false);
         return;
       }
-      if (data) {
-        setDataInpatient(data);
-        console.log('inpatient', data);
+      if (allTreats) {
+        /***fetch all treatments in treatment table***/
+        const { data: allTreatments, error } = await supabase
+          .from('treatment')
+          .select('*,PCode(*)');
+        if (error) {
+          message.error(error.message);
+          setLoading(false);
+          return;
+        }
+        if (allTreatments) {
+          const finalData = allTreats.map((item: any) => {
+            return {
+              doctor: item.DCode,
+              treatment: filterTreatCode(item, allTreatments),
+              medication: filterMedicationCode(item, allTreatUse),
+            };
+          });
+          setDataSource(finalData);
+          console.log('finalData', finalData);
+        }
       }
     } finally {
       setLoading(false);
     }
   };
 
-  //fetch all doctors
-  const fetchDataDoctor = async () => {
-    setLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('employee')
-        .select('*')
-        .eq('Role', 'Doctor');
-      if (error) {
-        message.error('error fetching data doctors');
-        setLoading(false);
-        return;
-      }
-      if (data) {
-        setDataDoctor(data);
-        console.log('doctors', data);
-      }
-    } finally {
-      setLoading(false);
-    }
+  const filterTreatCode = (dataTreat: any, dataTreatment: any[]) => {
+    const treatCodeFilter = dataTreatment.filter(
+      (item: any) => item.TreatCode == dataTreat.TreatCode
+    );
+    if (treatCodeFilter.length > 0) {
+      return treatCodeFilter[0];
+    } else return [];
   };
+
+  const filterMedicationCode = (dataTreat: any, dataMedication: any[]) => {
+    const medicationCodeFilter = dataMedication.filter(
+      (item: any) => item.TreatCode == dataTreat.TreatCode
+    );
+    if (medicationCodeFilter.length > 0) {
+      return medicationCodeFilter[0];
+    } else return [];
+  };
+
   return (
     <div className="flex flex-col gap-[0.5rem]">
       <HeaderTreatment />
