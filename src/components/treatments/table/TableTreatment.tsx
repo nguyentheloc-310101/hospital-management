@@ -1,6 +1,8 @@
 'use client'
 import { CustomTable } from '@/components/common/table/TableCustom';
+import { TableTreatmentProps } from '@/types/props';
 import { ColumnsType } from 'antd/es/table';
+<<<<<<< HEAD
 import React, { useEffect } from 'react';
 import { supabase } from '@/services/supabase/supabase-client';
 import { escape } from 'querystring';
@@ -30,6 +32,11 @@ const TableTreatment = () => {
       fetchTreatment()
       },[]
   )
+=======
+import React from 'react';
+
+const TableTreatment = ({ loading, dataSource }: TableTreatmentProps) => {
+>>>>>>> 7503ce95e86e7b9a176570e168ce21068a95b87f
   const columns: ColumnsType<any> = [
     {
       title: 'Patient Code',
@@ -57,19 +64,28 @@ const TableTreatment = () => {
       key: 'Result',
     },
 
-    //   {
-    //     title: 'Địa điểm',
-    //     dataIndex: 'resources',
-    //     key: 'resources',
-    //   },
-
+    {
+      title: 'Doctor',
+      dataIndex: 'doctor',
+      key: 'doctor',
+    },
+    {
+      title: 'Status',
+      dataIndex: 'status',
+      key: 'Status',
+    },
   ];
   return (
     <div className="">
       <CustomTable
         columns={columns}
+<<<<<<< HEAD
         dataSource={treatmentData}
         loading={false}
+=======
+        dataSource={dataSource}
+        loading={loading}
+>>>>>>> 7503ce95e86e7b9a176570e168ce21068a95b87f
       />
     </div>
   );
