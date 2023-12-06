@@ -18,7 +18,7 @@ const TreatmentPage = () => {
   const fetchDataTreat = async () => {
     setLoading(true);
     try {
-      //*fetch all data treatment_use*//
+      //fetch all data treatment_use//
       const { data: allTreatUse, error: errTreatUse } = await supabase
         .from('treatment_use')
         .select('*,medication(*)');
@@ -28,7 +28,7 @@ const TreatmentPage = () => {
         setLoading(false);
         return;
       }
-      //*fetch all data treat*//
+      //fetch all data treat//
       const { data: allTreats, error: errTreats } = await supabase
         .from('treat')
         .select('*,DCode(*)');
@@ -56,6 +56,7 @@ const TreatmentPage = () => {
             };
           });
           setDataSource(finalData);
+          setAllTreatment(finalData);
           console.log('finalData', finalData);
         }
       }
@@ -86,7 +87,7 @@ const TreatmentPage = () => {
     <div className="flex flex-col gap-[0.5rem]">
       <HeaderTreatment />
       <TableTreatment
-        dataSource={[]}
+        dataSource={dataSource}
         loading={loading}
       />
     </div>
