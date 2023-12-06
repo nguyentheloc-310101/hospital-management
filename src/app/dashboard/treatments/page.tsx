@@ -1,13 +1,21 @@
 'use client';
 import HeaderTreatment from '@/components/treatments/header/HeaderTreatment';
 import TableTreatment from '@/components/treatments/table/TableTreatment';
+import DetailSection from '@/components/treatments/table/details/DetailSection';
 import { supabase } from '@/services/supabase/supabase-client';
 import useTreatment from '@/stores/treatment';
 import { message } from 'antd';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
 const TreatmentPage = () => {
+  const router = useRouter();
+  const currentPath = usePathname();
+  const searchParams = useSearchParams();
+  const detailStatus = searchParams.get('detail');
+  const currentId = searchParams.get('treatment_id');
   const { setAllTreatment } = useTreatment();
+
   const [dataSource, setDataSource] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -31,7 +39,7 @@ const TreatmentPage = () => {
       //fetch all data treat//
       const { data: allTreats, error: errTreats } = await supabase
         .from('treat')
-        .select('*,DCode(*)');
+        .select('*,DCode(*,DeptCode(*))');
       if (errTreats) {
         message.error(errTreats.message);
         setLoading(false);
@@ -41,7 +49,7 @@ const TreatmentPage = () => {
         /***fetch all treatments in treatment table***/
         const { data: allTreatments, error } = await supabase
           .from('treatment')
-          .select('*,PCode(*)');
+          .select('*,PCode(*,NCode(*))');
         if (error) {
           message.error(error.message);
           setLoading(false);
@@ -82,14 +90,30 @@ const TreatmentPage = () => {
       return medicationCodeFilter[0];
     } else return [];
   };
-
+  const onChangeRow = (id: string) => {
+    if (detailStatus == 'true' && currentId == id) {
+      router.push('/dashboard/treatments');
+    } else {
+      const url: any = `${currentPath}?treatment_id=${id}&detail=true`;
+      router.push(url);
+    }
+  };
   return (
-    <div className="flex flex-col gap-[0.5rem]">
-      <HeaderTreatment />
-      <TableTreatment
-        dataSource={dataSource}
-        loading={loading}
-      />
+    <div
+      className={`grid ${
+        detailStatus == 'true' ? 'grid-cols-2' : 'grid-cols-1'
+      } gap-[0.5rem] h-full`}>
+      <div>
+        <HeaderTreatment />
+        <div id="table_treatment">
+          <TableTreatment
+            onChangeRow={onChangeRow}
+            dataSource={dataSource}
+            loading={loading}
+          />
+        </div>
+      </div>
+      {detailStatus == 'true' && <DetailSection />}
     </div>
   );
 };

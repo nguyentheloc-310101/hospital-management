@@ -41,7 +41,6 @@ export function CustomTable({
     });
     setFormatData(result);
   };
-  console.log('dataSource', formatData);
 
   const onSelectChange = (newSelectedRowKeys: any) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);

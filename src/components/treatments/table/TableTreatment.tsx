@@ -1,77 +1,217 @@
 import { CustomTable } from '@/components/common/table/TableCustom';
 import { TableTreatmentProps } from '@/types/props';
-import { ColumnsType } from 'antd/es/table';
+import Table, { ColumnsType } from 'antd/es/table';
 import dayjs from 'dayjs';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { ItemDoctor, ItemTime } from './item';
+import { Tag } from 'antd';
+import { useSearchParams } from 'next/navigation';
+import TableSkeleton from '@/components/common/skeleton/TableSkeleton';
+const columns: ColumnsType<any> = [
+  {
+    title: 'No',
+    dataIndex: 'TreatCode',
+    key: 'TreatCode',
+    width: 80,
+    render: (key: number, record) => (
+      <div>{record?.key < 10 ? '0' + record?.key : record?.key}</div>
+    ),
+  },
 
-const TableTreatment = ({ loading, dataSource }: TableTreatmentProps) => {
-  const columns: ColumnsType<any> = [
-    {
-      title: 'No',
-      dataIndex: 'TreatCode',
-      key: 'TreatCode',
-      width: 80,
-      render: (key: number, record) => (
-        <div>{record?.key < 10 ? '0' + record?.key : record?.key}</div>
-      ),
-    },
-    {
-      title: 'ID Treatment',
-      dataIndex: 'TreatCode',
-      key: 'TreatCode',
-      width: 150,
-      render: (_, record) => <div>{record.treatment?.TreatCode}</div>,
-    },
-    {
-      title: 'Patient name',
-      dataIndex: 'patient_name',
-      key: 'patient_name',
-      render: (_, record) => <div>{record.treatment.PCode?.LName}</div>,
-    },
-    {
-      title: 'Diagnosis',
-      dataIndex: 'Diagnosis',
-      key: 'Diagnosis',
-      render: (_, record) => <div>{record.treatment.PCode?.Diagnosis}</div>,
-    },
-    {
-      title: 'Time',
-      dataIndex: 'Time',
-      key: 'áds',
-      render: (_, record) => (
-        <div>
-          <div>
-            <span>Admission:</span>
-
-            <span>
-              {dayjs(record.treatment?.PCode?.AdmissionDate).format(
-                'DD/MM/YYYY'
-              )}
-            </span>
-          </div>
-        </div>
-      ),
-    },
-
-    {
-      title: 'Doctor',
-      dataIndex: 'doctor',
-      key: 'doctor',
-    },
-    {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'Status',
-    },
-  ];
-  return (
-    <div className="bg-white rounded-b-[8px]">
-      <CustomTable
-        columns={columns}
-        dataSource={dataSource}
-        loading={loading}
+  {
+    title: 'Patient name',
+    dataIndex: 'patient_name',
+    key: 'patient_name',
+    render: (_, record) => (
+      <div>
+        {record.treatment.PCode?.FName + ' ' + record.treatment.PCode?.LName}
+      </div>
+    ),
+  },
+  {
+    title: 'Diagnosis',
+    dataIndex: 'Diagnosis',
+    key: 'Diagnosis',
+    render: (_, record) => <div>{record.treatment.PCode?.Diagnosis}</div>,
+  },
+  {
+    title: 'Time',
+    dataIndex: 'Time',
+    key: 'áds',
+    render: (_, record) => (
+      <ItemTime
+        timeIn={record.treatment?.PCode?.AdmissionDate}
+        timeOut={record.treatment?.PCode?.DateOfDischarge}
       />
-    </div>
+    ),
+  },
+
+  {
+    title: 'Doctor',
+    dataIndex: 'doctor',
+    key: 'doctor',
+    render: (_, record) => (
+      <ItemDoctor
+        nurse_name={record.doctor?.FName + ' ' + record.doctor?.LName}
+        doctor_name={
+          record.treatment.PCode.NCode?.FName +
+          ' ' +
+          record.treatment.PCode.NCode?.LName
+        }
+      />
+    ),
+  },
+  {
+    title: 'Sick Room',
+    dataIndex: 'room',
+    key: 'room',
+    width: 150,
+    render: (_, record) => <div>{record.treatment?.PCode?.SickRoom}</div>,
+  },
+  {
+    title: 'Result',
+    dataIndex: 'Result',
+    key: 'Result',
+    render: (_, record) => (
+      <>
+        {record?.treatment.Result == 'remission' ? (
+          <Tag color="magenta">remission</Tag>
+        ) : (
+          <Tag color="green">recovered</Tag>
+        )}
+      </>
+    ),
+  },
+];
+const columnsDetails: ColumnsType<any> = [
+  {
+    title: 'Patient name',
+    dataIndex: 'patient_name',
+    key: 'patient_name',
+    render: (_, record) => (
+      <div>
+        {record.treatment.PCode?.FName + ' ' + record.treatment.PCode?.LName}
+      </div>
+    ),
+  },
+  {
+    title: 'Diagnosis',
+    dataIndex: 'Diagnosis',
+    key: 'Diagnosis',
+    render: (_, record) => <div>{record.treatment.PCode?.Diagnosis}</div>,
+  },
+  //  {
+  //    title: 'Time',
+  //    dataIndex: 'Time',
+  //    key: 'áds',
+  //    render: (_, record) => (
+  //      <ItemTime
+  //        timeIn={record.treatment?.PCode?.AdmissionDate}
+  //        timeOut={record.treatment?.PCode?.DateOfDischarge}
+  //      />
+  //    ),
+  //  },
+
+  //  {
+  //    title: 'Doctor',
+  //    dataIndex: 'doctor',
+  //    key: 'doctor',
+  //    render: (_, record) => (
+  //      <ItemDoctor
+  //        nurse_name={record.doctor?.FName + ' ' + record.doctor?.LName}
+  //        doctor_name={
+  //          record.treatment.PCode.NCode?.FName +
+  //          ' ' +
+  //          record.treatment.PCode.NCode?.LName
+  //        }
+  //      />
+  //    ),
+  //  },
+  //  {
+  //    title: 'Sick Room',
+  //    dataIndex: 'room',
+  //    key: 'room',
+  //    width: 150,
+  //    render: (_, record) => <div>{record.treatment?.PCode?.SickRoom}</div>,
+  //  },
+  {
+    title: 'Result',
+    dataIndex: 'Result',
+    key: 'Result',
+    render: (_, record) => (
+      <>
+        {record?.treatment.Result == 'remission' ? (
+          <Tag color="magenta">remission</Tag>
+        ) : (
+          <Tag color="green">recovered</Tag>
+        )}
+      </>
+    ),
+  },
+];
+const TableTreatment = ({
+  loading,
+  dataSource,
+  onChangeRow,
+}: TableTreatmentProps) => {
+  const searchParams = useSearchParams();
+  const treatment_id = searchParams.get('treatment_id');
+  const detail = searchParams.get('detail');
+
+  const [formatData, setFormatData] = useState<any[]>([]);
+  useEffect(() => {
+    formatDataSource();
+  }, [dataSource]);
+
+  const formatDataSource = () => {
+    if (dataSource.length == 0) {
+      return;
+    }
+    const result = dataSource?.map((item, index) => {
+      return {
+        ...item,
+        key: index + 1,
+      };
+    });
+    setFormatData(result);
+  };
+  return (
+    <main
+      className={`${
+        detail == 'true' ? 'w-auto' : 'w-full'
+      } overflow-y-scroll mt-2 `}>
+      <section className="bg-white rounded-b-[8px]">
+        <div className="p-3">
+          <TableSkeleton
+            columns={detail == 'true' ? columnsDetails : columns}
+            loading={loading}>
+            <Table
+              className="cursor-pointer w-[]"
+              rowClassName={(record, index) => {
+                if (treatment_id === record.treatment?.TreatCode) {
+                  return 'selected-row';
+                }
+                return '';
+              }}
+              onRow={(record) => {
+                return {
+                  onClick: (event) => {
+                    onChangeRow && onChangeRow(record.treatment?.TreatCode);
+                  },
+                };
+              }}
+              // pagination={false}
+              columns={detail == 'true' ? columnsDetails : columns}
+              dataSource={[...formatData]}
+              scroll={{
+                x: `${detail} == 'false' ?? 1000px`,
+                y: `calc(100vh - 21rem)`,
+              }}
+            />
+          </TableSkeleton>
+        </div>
+      </section>
+    </main>
   );
 };
 
