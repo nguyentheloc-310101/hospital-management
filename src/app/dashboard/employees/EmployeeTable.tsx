@@ -4,9 +4,10 @@ import { supabase } from '@/services/supabase/supabase-client';
 import { error } from 'console';
 import { Alert } from 'antd';
 import { CustomTable } from '@/components/common/table/TableCustom';
+
 const columns = [
   {
-    title: 'Unique Code',
+    title: 'Employee ID',
     dataIndex: 'UniqueCode',
     key: 'UniqueCode',
     
@@ -76,6 +77,7 @@ const columns = [
     title: 'Dept Code',
     dataIndex: 'DeptCode',
     key: 'DeptCode',
+    render:(_:any,record:any)=>(<div>{record.department?.Title}</div>),
     sorter: (a:any, b:any)=> a.DeptCode?.localeCompare(b.DeptCode),
   },
   // {
@@ -108,8 +110,8 @@ const EmployeeTable = () => {
       const { data,error} = await supabase.from('employee').select('*,department:DeptCode(Title)' ) // ! query based on equal DeptCode 
       if(data)
         setData(data);
-        console.log(data) //! for testing
-        
+        // console.log(data) //! for testing
+        console.log(data)
         setFetchError(null);
       if(error)
       {

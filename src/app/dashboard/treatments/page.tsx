@@ -64,7 +64,7 @@ const TreatmentPage = () => {
     }
   };
 
-  const filterTreatCode = (dataTreat: any, dataTreatment: any[]) => {
+  const   filterTreatCode = (dataTreat: any, dataTreatment: any[]) => {
     const treatCodeFilter = dataTreatment.filter(
       (item: any) => item.TreatCode == dataTreat.TreatCode
     );
@@ -86,7 +86,7 @@ const TreatmentPage = () => {
     <div className="flex flex-col gap-[0.5rem]">
       <HeaderTreatment />
       <TableTreatment
-        dataSource={[]}
+        dataSource={dataSource}
         loading={loading}
       />
     </div>

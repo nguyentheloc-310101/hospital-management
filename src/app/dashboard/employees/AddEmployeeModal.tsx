@@ -1,7 +1,7 @@
 // AddEmployeeModal.js
 
 import React from 'react';
-import { Alert, Dropdown, Input, Menu, MenuProps, Modal, Typography } from 'antd';
+import { Alert, Dropdown, Flex, Input, Menu, MenuProps, Modal, Typography } from 'antd';
 import { DatePicker } from 'antd/lib';
 import { DownOutlined } from '@ant-design/icons';
 
@@ -10,14 +10,19 @@ import { Button } from 'antd/lib/radio';
 import { UserAddOutlined } from '@ant-design/icons';
 import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/services/supabase/supabase-client';
+import {Select} from 'antd';
+import { generateId } from '@/utils/generate-id';
+
 const { Title } = Typography;
 //TODO: fix -> gom vao props
 //TODO: lay het record tu supabase ve xong roi console.log ra.
 
 //TODO: tao zustand (store) luu cac thong tin employee fetch ve./
+interface AddEmployeeModalProps {
+  optionSelect: any[],
+}
 
-
-const AddEmployeeModal = () => {
+const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
 
   const [id, setID] = React.useState('');
 
@@ -70,49 +75,10 @@ const AddEmployeeModal = () => {
     const selectedRole = e.key === 'notStated' ? null : e.key;
     setRole(selectedRole);
   };
+  //! fetch department data 
+ 
 
-  const departments: MenuProps['items'] = [
-    {
-      label: 'Not stated',
-      key: 'notStated',
-    },
-    {
-      label: 'Nursery',
-      key: 'Nursery',
-    },
-    {
-      label: 'Patient Services',
-      key: 'Patient Services',
-    },
-    {
-      label: 'Elderly Services',
-      key: 'Elderly Services',
-    },
-    {
-      label: 'Ophthalmology',
-      key: 'Ophthalmology',
-    },
-    {
-      label: 'Neurology',
-      key: 'Neurology',
-    },
-    {
-      label: 'Dermatology',
-      key: 'Dermatology',
-    },
-    {
-      label: 'Cardiology',
-      key: 'Cardiology',
-    },
-    {
-      label: 'Odontology',
-      key: 'Odontology',
-    },
-  ];
-  const handleDeparmentClick = (e: any) => {
-    const selectedDepartment = e.key === 'notStated' ? null : e.key;
-    setDepartment(selectedDepartment);
-  };
+  
 
   const [modalVisible, setModalVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
@@ -131,7 +97,7 @@ const AddEmployeeModal = () => {
       .from('employee')
       .insert([
         {
-          UniqueCode: id,
+          UniqueCode: generateId(),
           FName: fname,
           LName: lname,
           Dob: birthdate,
@@ -208,17 +174,12 @@ const AddEmployeeModal = () => {
         okButtonProps={{ style: { backgroundColor: '#16ABF2' } }}
         confirmLoading={confirmLoading}>
 
-        <Title level={5}>ID</Title>
-        {
-          insertError && (
-            <Alert message={insertError} type='error'></Alert>
-          )
-        }
-        <Input
-          value={id}
-          onChange={(e) => setID(e.target.value)}
-          placeholder={'Enter ID'}
-        />
+        
+      
+        
+        
+
+
 
         <Title level={5}>First Name</Title>
         <Input
@@ -293,14 +254,14 @@ const AddEmployeeModal = () => {
         </Dropdown.Button>
 
         <Title level={5}>Department Name</Title>
-        <Dropdown.Button
-          dropdownRender={() => (<Menu items={departments} onClick={handleDeparmentClick}></Menu>)}
 
-          trigger={['click']}
-          icon={<DownOutlined />}
-        >
-          {department === null ? 'Not Stated' : department || 'Select Department'}
-        </Dropdown.Button>
+        <Select
+          
+          style={{ width: 150 }}
+          onChange={(deptCode:any)=>{setDepartment(deptCode)}}
+          options={optionSelect.map(item=>{return {value:item?.value ,
+          label:item?.label}})}
+        />
       </Modal>
     </>
   );
