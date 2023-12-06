@@ -10,8 +10,9 @@ import { Button } from 'antd/lib/radio';
 import { UserAddOutlined } from '@ant-design/icons';
 import { useSearchParams } from 'next/navigation';
 import { supabase } from '@/services/supabase/supabase-client';
-import {Select} from 'antd';
+import { Select } from 'antd';
 import { generateId } from '@/utils/generate-id';
+import { clear } from 'console';
 
 const { Title } = Typography;
 //TODO: fix -> gom vao props
@@ -24,7 +25,7 @@ interface AddEmployeeModalProps {
 
 const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
 
-  const [id, setID] = React.useState('');
+
 
   const [fname, setFName] = React.useState('');
   const [lname, setLName] = React.useState('');
@@ -76,18 +77,31 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
     setRole(selectedRole);
   };
   //! fetch department data 
- 
+  const clearState = () => {
+    setFName('');
+    setLName('');
+    setBirthdate(null);
+    setStartDate(null);
+    setGender(null);
+    setAddress(null);
+    setPhoneNumber('');
+    setDegree(null);
+    setDegreeYear(null);
+    setRole(null);
+    setDepartment(null);
+    setInsertError(null);
+  }
 
-  
+
 
   const [modalVisible, setModalVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
   const handleSubmit = async () => {
 
 
-    if (!fname || !id) //in case of inserting null to non null
+    if (!fname) //in case of inserting null to non null
     {
-      setInsertError("First name or id cannot be set blank")
+      setInsertError("First name cannot be set blank")
       console.log(insertError)
       return
     }
@@ -143,7 +157,8 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
       setConfirmLoading(false);
       handleSubmit()
       // This is where to handle the adding states to the database.
-    }, 2000);
+      clearState()
+    }, 1000);
 
 
   };
@@ -174,10 +189,10 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
         okButtonProps={{ style: { backgroundColor: '#16ABF2' } }}
         confirmLoading={confirmLoading}>
 
-        
-      
-        
-        
+
+
+
+
 
 
 
@@ -256,11 +271,15 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
         <Title level={5}>Department Name</Title>
 
         <Select
-          
+
           style={{ width: 150 }}
-          onChange={(deptCode:any)=>{setDepartment(deptCode)}}
-          options={optionSelect.map(item=>{return {value:item?.value ,
-          label:item?.label}})}
+          onChange={(deptCode: any) => { setDepartment(deptCode) }}
+          options={optionSelect.map(item => {
+            return {
+              value: item?.value,
+              label: item?.label
+            }
+          })}
         />
       </Modal>
     </>

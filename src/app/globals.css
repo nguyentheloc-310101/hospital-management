@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 ::-webkit-scrollbar {
-  width: 2px;
+  width: 4px;
 }
 
 /* html {
@@ -35,4 +35,17 @@ ul {
 
 a {
   text-decoration: none;
+}
+
+/*record selected backgroud*/
+#table_treatment * .ant-table-row.ant-table-row-level-0.selected-row {
+  background-color: #37aaed;
+}
+
+#table_treatment * .ant-table-row.ant-table-row-level-0.selected-row:hover,
+#table_treatment
+  *
+  .ant-table-row.ant-table-row-level-0.selected-row
+  > .ant-table-cell.ant-table-cell-row-hover {
+  background-color: #56bcf6 !important;
 }
