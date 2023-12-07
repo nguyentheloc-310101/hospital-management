@@ -1,0 +1,1 @@
+all function login, register I have already implemented, you just push it into the button event when click
