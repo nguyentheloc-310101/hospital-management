@@ -52,10 +52,20 @@ export default function DashboardLayout({
       icon: <MedicineBoxOutlined />,
       label: 'Employees',
     },
+    // {
+    //   key: '/dashboard/patients',
+    //   icon: <UserOutlined />,
+    //   label: 'Patients',
+    // },
     {
-      key: '/dashboard/patients',
+      key: '/dashboard/outpatients',
+      icon: <MedicineBoxOutlined />,
+      label: 'Out Patient',
+    },
+    {
+      key: '/dashboard/inpatients',
       icon: <UserOutlined />,
-      label: 'Patients',
+      label: 'In Patients',
     },
   ];
   const setHeader = () => {
@@ -139,8 +149,9 @@ export default function DashboardLayout({
       <div className="w-full">
         <Header
           style={{ padding: 0 }}
-          className="uppercase font-bold w-full lg:text-[18px] text-[12px] bg-[white] relative top-0">
-          {headerName}
+          className=" font-bold w-full lg:text-[18px] text-[12px] bg-[white] relative top-0 flex items-center justify-between ">
+          <div className="uppercase"> {headerName}</div>
+          <div className="mr-[2rem] lg:block hidden">username</div>
         </Header>
         <Content
           style={{
