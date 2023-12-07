@@ -1,14 +1,9 @@
-<<<<<<< HEAD
-'use client';
-=======
 'use client'
->>>>>>> 55c24fdf41db255db146a4516c9ee7efff462c43
 import { CustomTable } from '@/components/common/table/TableCustom';
 import { TableTreatmentProps } from '@/types/props';
 import { ColumnsType } from 'antd/es/table';
 import React from 'react';
 
-<<<<<<< HEAD
 const TableTreatment = ({ loading, dataSource }: TableTreatmentProps) => {
   const columns: ColumnsType<any> = [
     {
@@ -36,35 +31,6 @@ const TableTreatment = ({ loading, dataSource }: TableTreatmentProps) => {
       dataIndex: 'Result',
       key: 'Result',
     },
-=======
-  {
-    title: 'Patient name',
-    dataIndex: 'patient_name',
-    key: 'patient_name',
-    render: (_, record) => (
-      <div>
-        {record.treatment.PCode?.FName + ' ' + record.treatment.PCode?.LName}
-      </div>
-    ),
-  },
-  {
-    title: 'Diagnosis',
-    dataIndex: 'Diagnosis',
-    key: 'Diagnosis',
-    render: (_, record) => <div>{record.treatment.PCode?.Diagnosis}</div>,
-  }, //
-  {
-    title: 'Time',
-    dataIndex: 'Time',
-    key: 'áds',
-    render: (_, record) => (
-      <ItemTime
-        timeIn={record.treatment?.PCode?.AdmissionDate}
-        timeOut={record.treatment?.PCode?.DateOfDischarge}
-      />
-    ),
-  },
->>>>>>> 55c24fdf41db255db146a4516c9ee7efff462c43
 
     {
       title: 'Doctor',
