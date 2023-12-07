@@ -121,6 +121,7 @@ const TreatmentPage = () => {
       return pattern.test(
         item.treatment.PCode?.LName +
           item.treatment.PCode?.FName +
+          item.treatment.PCode?.Phone +
           item.treatment.PCode?.Diagnosis +
           item.treatment.PCode?.SickRoom +
           item.treatment?.PCode +
