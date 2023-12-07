@@ -4,110 +4,140 @@ import { supabase } from '@/services/supabase/supabase-client';
 import { error } from 'console';
 import { Alert } from 'antd';
 import { CustomTable } from '@/components/common/table/TableCustom';
-
+import {EditOutlined, DeleteOutlined} from '@ant-design/icons'
 const columns = [
   {
-    title: 'Employee ID',
+    title: 'Unique Code',
     dataIndex: 'UniqueCode',
     key: 'UniqueCode',
-    
     sorter: (a:any, b:any) => a.UniqueCode.localeCompare(b.UniqueCode),
+  },
+  {
+    title: 'IPCode',
+    dataIndex: 'IPCode',
+    key: 'IPCode',
+    sorter: (a:any, b:any)=> a.IPCode.localeCompare(b.IPCode),
   },
   {
     title: 'First Name',
     dataIndex: 'FName',
     key: 'FName',
-    
     sorter: (a:any, b:any)=> a.FName.localeCompare(b.FName),
   },
   {
     title: 'Last Name',
     dataIndex: 'LName',
     key: 'LName',
-    sorter: (a:any, b:any)=>{ 
-      
-      
-      a.LName?.localeCompare(b.LName)
-    
-    },
+    sorter: (a:any, b:any)=> a.LName.localeCompare(b.LName),
   },
   {
     title: 'DOB',
     dataIndex: 'Dob',
     key: 'Dob',
-    sorter: (a:any, b:any)=> a.Dob?.localeCompare(b.Dob),
+    sorter: (a:any, b:any)=> a.Dob.localeCompare(b.Dob),
   },
   {
     title: 'Gender',
     dataIndex: 'Gender',
     key: 'Gender',
-    sorter: (a:any, b:any)=> a.Gender?.localeCompare(b.Gender),
+    sorter: (a:any, b:any)=> a.Gender.localeCompare(b.Gender),
   },
   {
     title: 'Address',
     dataIndex: 'Address',
     key: 'Address',
-    sorter: (a:any, b:any)=> a.Address?.localeCompare(b.Address),
+    sorter: (a:any, b:any)=> a.Address.localeCompare(b.Address),
   },
   {
-    title: 'Degree Name',
-    dataIndex: 'DegreeName',
-    key: 'DegreeName',
-    sorter: (a:any, b:any)=> a.DegreeName?.localeCompare(b.DegreeName),
+    title: 'Phone Number',
+    dataIndex: 'Phone',
+    key: 'Phone',
+    sorter: (a:any, b:any)=> a.Phone.localeCompare(b.Phone),
   },
   {
-    title: 'Degree Year',
-    dataIndex: 'DegreeYear',
-    key: 'DegreeYear',
-    sorter: (a:any, b:any)=> a.DegreeYear?.localeCompare(b.DegreeYear),
+    title: 'Admission Date',
+    dataIndex: 'AdmissionDate',
+    key: 'AdmissionDate',
+    sorter: (a:any, b:any)=> a.AdmissionDate.localeCompare(b.AdmissionDate),
   },
   {
-    title: 'Start Date',
-    dataIndex: 'StartDate',
-    key: 'StartDate',
-    sorter: (a:any, b:any)=> a.StartDate?.localeCompare(b.StartDate),
+    title: 'Date Of Discharge',
+    dataIndex: 'DateOfDischarge',
+    key: 'DateOfDischarge',
+    sorter: (a:any, b:any)=> a.DateOfDischarge.localeCompare(b.DateOfDischarge),
   },
   {
-    title: 'Role',
-    dataIndex: 'Role',
-    key: 'Role',
-    sorter: (a:any, b:any)=> a.Role?.localeCompare(b.Role),
+    title: 'Sick Room',
+    dataIndex: 'SickRoom',
+    key: 'SickRoom',
+    sorter: (a:any, b:any)=> a.SickRoom.localeCompare(b.SickRoom),
   },
   {
-    title: 'Dept Code',
-    dataIndex: 'DeptCode',
-    key: 'DeptCode',
-    render:(_:any,record:any)=>(<div>{record.department?.Title}</div>),
-    sorter: (a:any, b:any)=> a.DeptCode?.localeCompare(b.DeptCode),
+    title: 'Fee',
+    dataIndex: 'Fee',
+    key: 'Fee',
+    sorter: (a:any, b:any)=> a.Fee.localeCompare(b.Fee),
   },
-  // {
-  //   title: 'Department',
-  //   dataIndex: 'Title', // ! i was trying to fetch the department's name, but it didnt work
-  //   key: 'Title',
-  //   // sorter: (a:any, b:any)=> a.Title.localeCompare(b.Title),
-  // },
-
+  {
+    title: 'NCode',
+    dataIndex: 'NCode',
+    key: 'NCode',
+    sorter: (a:any, b:any)=> a.NCode.localeCompare(b.NCode),
+  },
+  {
+    title: 'Diagnosis',
+    dataIndex: 'Diagnosis',
+    key: 'Diagnosis',
+    sorter: (a:any, b:any)=> a.Diagnosis.localeCompare(b.Diagnosis),
+  },
+  {
+    title: 'Action',
+    key: 'Action',
+    render: (record) => {
+      return <>
+      <EditOutlined onClick={() =>{
+        handleUpdate(record)
+      }} />
+      <DeleteOutlined onClick={()=>{
+        handleDelete(record);
+      }} style={{marginLeft:15}} />
+      </>
+    }
+  },
 ];
 
+const handleDelete = async (record) => {
+  const {data,error} = await supabase
+  .from('inpatient')
+  .delete()
+  .eq('UniqueCode', record.UniqueCode)
+  .select()
+}
+const handleUpdate = async (record) => {
+  // const {data,error} = await supabase
+  // .from('outpatient')
+  // .update()
+  // .eq('UniqueCode', record.UniqueCode)
+  // .select()
+}
 
-
-const EmployeeTable = () => {
+const InpatientTable = () => {
   // * ROUTER FOR feature : click for expanding detail 
   //const router = useRouter();
   // const searchParams = useSearchParams();
   // const onChangeRow = (id: string) => {
   //   const detailStatus = searchParams.get('details');
   //   if (detailStatus == 'false' || detailStatus == '')
-  //     router.push(`/dashboard/employees/id=${id}&details=true`);
+  //     router.push(`/dashboard/Inpatients/id=${id}&details=true`);
   //   else {
-  //     router.push(`/dashboard/employees/id=${id}&details=false`);
+  //     router.push(`/dashboard/Inpatients/id=${id}&details=false`);
   //   }
   // };
   const [fetchError, setFetchError] = React.useState<any>(null)
   const [data, setData] = React.useState<any >([])
   useEffect(() => {
     const fetchData = async () => {
-      const { data,error} = await supabase.from('employee').select('*,department:DeptCode(Title)' ) // ! query based on equal DeptCode 
+      const { data,error} = await supabase.from('inpatient').select() // ! query based on equal DeptCode 
       if(data)
         setData(data);
         // console.log(data) //! for testing
@@ -162,4 +192,4 @@ const EmployeeTable = () => {
   );
 };
 
-export default EmployeeTable;
+export default InpatientTable;

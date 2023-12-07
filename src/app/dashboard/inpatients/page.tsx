@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, FloatButton, Input, Tabs, Typography, message } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
-import AddEmployeeModal from './AddEmployeeModal';
-import EmployeeTable from '@/app/dashboard/employees/EmployeeTable'; // Import the new component
+import AddInpatientModal from './AddInpatientModal';
+import InpatientTable from '@/app/dashboard/inpatients/InpatientTable'; // Import the new component
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/services/supabase/supabase-client';
 
@@ -26,7 +26,7 @@ const items = [
 ];
 
 
-const DoctorsPage = () => {
+const InpatientsPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   // const detailStatus = searchParams.get('details');
@@ -38,7 +38,7 @@ const DoctorsPage = () => {
   const [department,setDepartment] = useState<any[]>([])
   const [optionDepartment,setOptionDepartment] = useState<any[]>([])
   //useEffect (()=>{},[Name])
-  //tao zustand (store) luu cac thong tin employee fetch ve
+  //tao zustand (store) luu cac thong tin Inpatient fetch ve
   useEffect(()=>{
     fetchDeparment()
   },[])
@@ -66,10 +66,10 @@ const DoctorsPage = () => {
     <>
       <Col className={'mt-2 ml-1 mr-1'}>
         <Card
-          title={'EMPLOYEES INFORMATION'}
+          title={'INPATIENTS INFORMATION'}
           extra={
             <>
-              <AddEmployeeModal optionSelect={[...optionDepartment]} />
+              <AddInpatientModal optionSelect={[...optionDepartment]} />
               {/*    can add some components here*/}
             </>
           }>
@@ -84,7 +84,7 @@ const DoctorsPage = () => {
               </TabPane>
             ))}
           </Tabs> */}
-          <EmployeeTable />
+          <InpatientTable />
           
           
         </Card>
@@ -94,4 +94,4 @@ const DoctorsPage = () => {
   );
 };
 
-export default DoctorsPage;
+export default InpatientsPage;

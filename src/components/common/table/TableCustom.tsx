@@ -26,21 +26,14 @@ export function CustomTable({
 
   const [formatData, setFormatData] = useState<any[]>([]);
   useEffect(() => {
-    formatDataSource();
-  }, [dataSource]);
-
-  const formatDataSource = () => {
-    if (dataSource.length == 0) {
-      return;
-    }
-    const result = dataSource?.map((item, index) => {
+    const resullt = dataSource?.map((item, index) => {
       return {
         ...item,
-        key: index + 1,
+        key: index,
       };
     });
-    setFormatData(result);
-  };
+    setFormatData(resullt);
+  }, [dataSource]);
 
   const onSelectChange = (newSelectedRowKeys: any) => {
     console.log('selectedRowKeys changed: ', newSelectedRowKeys);
@@ -95,9 +88,10 @@ export function CustomTable({
           onRow={onRow}
           className="cursor-pointer"
           rowSelection={rowSelection}
+          pagination={false}
           columns={columns}
           dataSource={[...formatData]}
-          scroll={{ x: 1000, y: `calc(100vh - 21rem)` }}
+          scroll={{ x: 1000, y: `calc(100vh - 24.5rem)` }}
         />
       )}
     </TableSkeleton>

@@ -3,8 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Card, Col, FloatButton, Input, Tabs, Typography, message } from 'antd';
 import { UserAddOutlined } from '@ant-design/icons';
-import AddEmployeeModal from './AddEmployeeModal';
-import EmployeeTable from '@/app/dashboard/employees/EmployeeTable'; // Import the new component
+import AddOutpatientModal from './AddOutpatientModal';
+import UpdateOutpatientModal from './UpdateOutpatientModal';
+import OutpatientTable from '@/app/dashboard/outpatients/OutpatientTable'; // Import the new component
 import { useRouter, useSearchParams } from 'next/navigation';
 import { supabase } from '@/services/supabase/supabase-client';
 
@@ -26,7 +27,7 @@ const items = [
 ];
 
 
-const DoctorsPage = () => {
+const OutpatientsPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   // const detailStatus = searchParams.get('details');
@@ -38,7 +39,7 @@ const DoctorsPage = () => {
   const [department,setDepartment] = useState<any[]>([])
   const [optionDepartment,setOptionDepartment] = useState<any[]>([])
   //useEffect (()=>{},[Name])
-  //tao zustand (store) luu cac thong tin employee fetch ve
+  //tao zustand (store) luu cac thong tin Outpatient fetch ve
   useEffect(()=>{
     fetchDeparment()
   },[])
@@ -66,10 +67,11 @@ const DoctorsPage = () => {
     <>
       <Col className={'mt-2 ml-1 mr-1'}>
         <Card
-          title={'EMPLOYEES INFORMATION'}
+          title={'OUTPATIENTS INFORMATION'}
           extra={
             <>
-              <AddEmployeeModal optionSelect={[...optionDepartment]} />
+              <AddOutpatientModal optionSelect={[...optionDepartment]} />
+              {/* <UpdateOutpatientModal/> */}
               {/*    can add some components here*/}
             </>
           }>
@@ -84,7 +86,7 @@ const DoctorsPage = () => {
               </TabPane>
             ))}
           </Tabs> */}
-          <EmployeeTable />
+          <OutpatientTable />
           
           
         </Card>
@@ -94,4 +96,4 @@ const DoctorsPage = () => {
   );
 };
 
-export default DoctorsPage;
+export default OutpatientsPage;
