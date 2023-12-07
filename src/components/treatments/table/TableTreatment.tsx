@@ -33,7 +33,7 @@ const columns: ColumnsType<any> = [
     dataIndex: 'Diagnosis',
     key: 'Diagnosis',
     render: (_, record) => <div>{record.treatment.PCode?.Diagnosis}</div>,
-  },
+  }, //
   {
     title: 'Time',
     dataIndex: 'Time',
