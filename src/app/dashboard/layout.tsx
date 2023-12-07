@@ -93,13 +93,13 @@ export default function DashboardLayout({
     setCollapsed(!collapsed);
   };
   return (
-    <Layout className="max-h-[1440px] overflow-hidden">
+    <Layout className=" overflow-hidden">
       <Sider
         breakpoint="lg"
         collapsedWidth="4rem"
         trigger={null}
         collapsible
-        style={{ backgroundColor: '#fff', height: '100vh' }}
+        style={{ backgroundColor: '#fff', height: 'auto' }}
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}>
         <div

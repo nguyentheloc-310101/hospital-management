@@ -34,7 +34,7 @@ const columns: ColumnsType<any> = [
     dataIndex: 'Diagnosis',
     key: 'Diagnosis',
     render: (_, record) => <div>{record.treatment.PCode?.Diagnosis}</div>,
-  },
+  }, //
   {
     title: 'Time',
     dataIndex: 'Time',
@@ -128,13 +128,13 @@ const columnsDetails: ColumnsType<any> = [
   //      />
   //    ),
   //  },
-  //  {
-  //    title: 'Sick Room',
-  //    dataIndex: 'room',
-  //    key: 'room',
-  //    width: 150,
-  //    render: (_, record) => <div>{record.treatment?.PCode?.SickRoom}</div>,
-  //  },
+  {
+    title: 'Sick Room',
+    dataIndex: 'room',
+    key: 'room',
+    width: 150,
+    render: (_, record) => <div>{record.treatment?.PCode?.SickRoom}</div>,
+  },
   {
     title: 'Result',
     dataIndex: 'Result',
@@ -177,17 +177,17 @@ const TableTreatment = ({
     setFormatData(result);
   };
   return (
-    <main
+    <div
       className={`${
         detail == 'true' ? 'w-auto' : 'w-full'
       } overflow-y-scroll mt-2 `}>
-      <section className="bg-white rounded-b-[8px]">
+      <section className="bg-white rounded-[8px]  rounded-t-[0px]">
         <div className="p-3">
           <TableSkeleton
             columns={detail == 'true' ? columnsDetails : columns}
             loading={loading}>
             <Table
-              className="cursor-pointer w-[]"
+              className="cursor-pointer"
               rowClassName={(record, index) => {
                 if (treatment_id === record.treatment?.TreatCode) {
                   return 'selected-row';
@@ -206,13 +206,13 @@ const TableTreatment = ({
               dataSource={[...formatData]}
               scroll={{
                 x: `${detail} == 'false' ?? 1000px`,
-                y: `calc(100vh - 21rem)`,
+                y: `calc(100vh - 24rem)`,
               }}
             />
           </TableSkeleton>
         </div>
       </section>
-    </main>
+    </div>
   );
 };
 

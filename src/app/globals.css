@@ -39,7 +39,7 @@ a {
 
 /*record selected backgroud*/
 #table_treatment * .ant-table-row.ant-table-row-level-0.selected-row {
-  background-color: #37aaed;
+  background-color: #89caf0;
 }
 
 #table_treatment * .ant-table-row.ant-table-row-level-0.selected-row:hover,
@@ -47,5 +47,5 @@ a {
   *
   .ant-table-row.ant-table-row-level-0.selected-row
   > .ant-table-cell.ant-table-cell-row-hover {
-  background-color: #56bcf6 !important;
+  background-color: #9ed3f2 !important;
 }
