@@ -26,6 +26,12 @@ const TreatmentPage = () => {
   const fetchDataTreat = async () => {
     setLoading(true);
     try {
+      //fetch all departments data
+
+      const { data: department, error: errDepartment } = await supabase
+        .from('department')
+        .select('*');
+
       //fetch all data treatment_use//
       const { data: allTreatUse, error: errTreatUse } = await supabase
         .from('treatment_use')
@@ -102,7 +108,7 @@ const TreatmentPage = () => {
     <div
       className={`grid ${
         detailStatus == 'true' ? 'grid-cols-2' : 'grid-cols-1'
-      } gap-[0.5rem] h-full`}>
+      } gap-[0.5rem] h-[86vh]`}>
       <div>
         <HeaderTreatment />
         <div id="table_treatment">
@@ -113,7 +119,7 @@ const TreatmentPage = () => {
           />
         </div>
       </div>
-      {detailStatus == 'true' && <DetailSection />}
+      {detailStatus == 'true' && <DetailSection dataSource={dataSource} />}
     </div>
   );
 };
