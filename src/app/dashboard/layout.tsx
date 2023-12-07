@@ -7,7 +7,16 @@ import {
   RollbackOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Dropdown, Layout, Menu, MenuProps, Space, theme } from 'antd';
+import {
+  Button,
+  Dropdown,
+  Layout,
+  Menu,
+  MenuProps,
+  Space,
+  message,
+  theme,
+} from 'antd';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -38,6 +47,7 @@ export default function DashboardLayout({
     if (storage_user) {
       setUser(storage_user);
     } else {
+      message.warning('Hãy đăng nhập trước');
       router.push('/login');
     }
   };

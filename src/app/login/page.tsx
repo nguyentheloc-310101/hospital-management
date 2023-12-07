@@ -20,12 +20,6 @@ export default function Login() {
       router.push('/login');
     }
   };
-  const handleSignUp = async () => {
-    await supabase.auth.signUp({
-      email: email,
-      password: password,
-    });
-  };
 
   const handleSignIn = async () => {
     const { data, error } = await supabase.from('users').select('*');
@@ -41,11 +35,6 @@ export default function Login() {
       message.error('Please check your email or password');
       return;
     }
-  };
-
-  const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.refresh();
   };
 
   return (
@@ -120,6 +109,7 @@ export default function Login() {
 
             <div>
               <button
+                type="button"
                 onClick={handleSignIn}
                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 Sign in
