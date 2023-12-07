@@ -88,7 +88,7 @@ const TreatmentPage = () => {
     }
   };
 
-  const filterTreatCode = (dataTreat: any, dataTreatment: any[]) => {
+  const   filterTreatCode = (dataTreat: any, dataTreatment: any[]) => {
     const treatCodeFilter = dataTreatment.filter(
       (item: any) => item.TreatCode == dataTreat.TreatCode
     );
