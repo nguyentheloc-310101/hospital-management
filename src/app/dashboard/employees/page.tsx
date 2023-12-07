@@ -66,7 +66,7 @@ const DoctorsPage = () => {
     <>
       <Col className={'mt-2 ml-1 mr-1'}>
         <Card
-          title={'EMPLOYEES INFORMATION'}
+          
           extra={
             <>
               <AddEmployeeModal optionSelect={[...optionDepartment]} />

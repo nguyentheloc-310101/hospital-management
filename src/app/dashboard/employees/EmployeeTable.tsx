@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Dropdown, Form, Input } from 'antd';
+import { Button, Dropdown, Form, Input, message } from 'antd';
 import { supabase } from '@/services/supabase/supabase-client';
 import { error } from 'console';
 import { Alert } from 'antd';
@@ -14,7 +14,7 @@ import { DeleteTwoTone, EditOutlined, EditTwoTone, SaveTwoTone } from '@ant-desi
 
 
 const EmployeeTable = () => {
-  const [form] = Form.useForm() 
+  const [form] = Form.useForm()
   const [fetchError, setFetchError] = React.useState<any>(null)
   const [data, setData] = React.useState<any>([])
   useEffect(() => {
@@ -35,57 +35,55 @@ const EmployeeTable = () => {
     fetchData();
   }, []);
 
-
-  const [editingRow, setEditingRow] = React.useState(null)
+  const [deleteRow,setDeleteRow] = React.useState<any>(null)
+  const [editingRow, setEditingRow] = React.useState<any>(null)
   // * ROUTER FOR feature : click for expanding detail 
-  const [fieldsValue, setFieldsValue] = React.useState(null)
-  
+
+
   const columns = [
     {
       title: 'Employee ID',
       dataIndex: 'UniqueCode',
       key: 'UniqueCode',
-  
+
       sorter: (a: any, b: any) => a.UniqueCode.localeCompare(b.UniqueCode),
     },
     {
       title: 'First Name',
       dataIndex: 'FName',
       key: 'FName',
-      
+
       sorter: (a: any, b: any) => a.FName.localeCompare(b.FName),
     },
     {
       title: 'Last Name',
       dataIndex: 'LName',
       key: 'LName',
-      
-      render:(_:any,record:any)=>{
-        if(editingRow === record.UniqueCode)
-        {
-            return (<Form.Item 
-            name="Lname" 
+
+      render: (_: any, record: any) => {
+        if (editingRow === record.UniqueCode) {
+          return (<Form.Item
+            name="LName"
             rules={[
               {
-                required:true,
-                message:"Enter Lname",
+                required: true,
+                message: `Enter last name`,
               }
             ]}
-            >
-              <Input></Input>
-            </Form.Item>
-            )
+          >
+            <Input></Input>
+          </Form.Item>
+          )
         }
-        else
-        {
-            return <div>{record.LName}</div>
+        else {
+          return <div>{record.LName}</div>
         }
       },
       // sorter: (a: any, b: any) => {
-  
-      
+
+
       //   a.LName?.localeCompare(b.LName)
-  
+
       // },
     },
     {
@@ -137,7 +135,7 @@ const EmployeeTable = () => {
       render: (_: any, record: any) => (<div>{record.department?.Title}</div>),
       sorter: (a: any, b: any) => a.DeptCode?.localeCompare(b.DeptCode),
     },
-    
+
     // {
     //   title: 'Department',
     //   dataIndex: 'Title', // ! i was trying to fetch the department's name, but it didnt work
@@ -146,31 +144,36 @@ const EmployeeTable = () => {
     // },
     {
       title: "Action",
-      render:(_:any,record:any)=>
-      {
+      render: (_: any, record: any) => {
         return (
           <div className='flex space-x-4'>
-            <Button icon={<EditTwoTone /> } 
-            onClick={
-            ()=>
-            {setEditingRow(record.UniqueCode);
-              form.setFieldValue
-              {
-                LName:record.LName
-              }
-            }} ></Button>
+            <Button icon={<EditTwoTone />}
+              onClick={
+                () => {
+                  setEditingRow(record.UniqueCode);
+                  
+                  form.setFieldValue
+                  {
+                    LName: record.LName
+                  }
+                }} ></Button>
             <Button icon={<SaveTwoTone />} htmlType='submit'></Button>
-            <Button icon={<DeleteTwoTone />} ></Button>
+            <Button icon={<DeleteTwoTone />} onClick={
+                () => {
+                  setDeleteRow(record.UniqueCode);
+                  
+                  
+                }}></Button>
           </div>
-          
-          
-          
+
+
+
         )
       }
     }
-  
+
   ];
-  
+
 
   //const router = useRouter();
   // const searchParams = useSearchParams();
@@ -182,12 +185,76 @@ const EmployeeTable = () => {
   //     router.push(`/dashboard/employees/id=${id}&details=false`);
   //   }
   // };
-  
-  const onFinish = (values:any)=>
-  {
-    console.log(values)
+// !const onSubmit = async () =>
+// {
+//   const{data,error} = await supabase.from('employee').update('*').eq('UniqueCode',editingRow).select()
+//   if(error)
+//   {
+//     message.error(error.message)
+
+//   }
+//   if(data)
+//   {
+//     console.log(data)
     
+//   }
+// }
+
+useEffect(() => {
+  if(deleteRow!==null)
+  {
+    handleDelete()
   }
+}, [deleteRow]);
+const handleDelete = async()=>
+{
+  console.log("Index to delete",deleteRow)
+  const{data,error} = await supabase.from('employee').delete().eq('UniqueCode',deleteRow)
+  if(error)
+  {
+    message.error(error.message)
+  }
+  if(data)
+  {
+    console.log(data)
+  }
+
+}
+  const onFinish = async (values: any) => {
+    console.log(values)
+    const updateDataSource = [...data];
+
+    // Find the index of the editingRow in the array
+    const rowIndex = updateDataSource.findIndex((item) => item.UniqueCode === editingRow);
+    console.log(rowIndex)
+    // If the editingRow is found, update only the specified values
+    if (rowIndex !== -1) {
+      updateDataSource[rowIndex] = { ...updateDataSource[rowIndex], ...values };
+      const { data: updatedData, error } = await supabase
+      .from('employee')
+      .update({ ...values })
+      .eq('UniqueCode', editingRow)
+      
+
+    if (error) {
+      message.error(error.message);
+    } else {
+      console.log(updatedData);
+    }
+    }
+    else
+    {
+      return
+    }
+    console.log(updateDataSource)
+    // Update the state with the modified array
+    setData(updateDataSource);
+    console.log(editingRow)
+    // Reset editingRow to null
+    
+    setEditingRow(null)
+  }
+
   return (
     <>
       {/* <Table
@@ -209,22 +276,22 @@ const EmployeeTable = () => {
       /> */}
       <Form form={form} onFinish={onFinish}>
 
-      <Table dataSource={data}
+        <Table dataSource={data}
           columns={columns}
-         
+
           // style={{maxWidth:'max-content'}}
-          scroll={{ x:true}}
+          scroll={{ x: true }}
         ></Table>
       </Form>
-        
 
-        {
-          fetchError && (
-            <Alert message={fetchError} type='error'></Alert> //? conditional rendering? 
-          )
-        }
-      
-    
+
+      {
+        fetchError && (
+          <Alert message={fetchError} type='error'></Alert> //? conditional rendering? 
+        )
+      }
+
+
     </>
   );
 };
