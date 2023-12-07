@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import { CustomTable } from '@/components/common/table/TableCustom';
 import { TableTreatmentProps } from '@/types/props';
 import Table, { ColumnsType } from 'antd/es/table';
@@ -53,12 +53,12 @@ const columns: ColumnsType<any> = [
     key: 'doctor',
     render: (_, record) => (
       <ItemDoctor
-        nurse_name={record.doctor?.FName + ' ' + record.doctor?.LName}
-        doctor_name={
+        nurse_name={
           record.treatment.PCode.NCode?.FName +
           ' ' +
           record.treatment.PCode.NCode?.LName
         }
+        doctor_name={record.doctor?.FName + ' ' + record.doctor?.LName}
       />
     ),
   },
