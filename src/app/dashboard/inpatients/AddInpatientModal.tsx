@@ -1,4 +1,4 @@
-// AddEmployeeModal.js
+// AddInpatientModal.js
 
 import React from 'react';
 import { Alert, Dropdown, Flex, Input, Menu, MenuProps, Modal, Typography } from 'antd';
@@ -17,26 +17,27 @@ const { Title } = Typography;
 //TODO: fix -> gom vao props
 //TODO: lay het record tu supabase ve xong roi console.log ra.
 
-//TODO: tao zustand (store) luu cac thong tin employee fetch ve./
-interface AddEmployeeModalProps {
+//TODO: tao zustand (store) luu cac thong tin Inpatient fetch ve./
+interface AddInpatientModalProps {
   optionSelect: any[],
 }
 
-const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
+const AddInpatientModal = ({ optionSelect }: AddInpatientModalProps) => {
 
-  const [id, setID] = React.useState('');
-
+  const [ipCode, setIPCode] = React.useState('');
   const [fname, setFName] = React.useState('');
   const [lname, setLName] = React.useState('');
   const [birthdate, setBirthdate] = React.useState<any | null>(null);
-  const [startDate, setStartDate] = React.useState<any | null>(null);
+  // const [startDate, setStartDate] = React.useState<any | null>(null);
   const [gender, setGender] = React.useState<any | null>(null);
   const [address, setAddress] = React.useState<any | null>(null);
   const [phoneNumber, setPhoneNumber] = React.useState<any | null>('');
-  const [degree, setDegree] = React.useState<any | null>(null);
-  const [degreeYear, setDegreeYear] = React.useState<any | null>(null);
-  const [role, setRole] = React.useState<any | null>(null);
-  const [department, setDepartment] = React.useState<any | null>(null);
+  const [admissionDate, setAdmissionDate] = React.useState<any | null>(null);
+  const [dateOfDischarge, setDateOfDischarge] = React.useState<any | null>(null);
+  const [sickRoom, setSickRoom] = React.useState<any | null>(null);
+  const [fee, setFee] = React.useState<any | null>(null);
+  const [nCode, setNCode] = React.useState<any | null>(null);
+  const [diagnosis, setDiagnosis] = React.useState<any | null>(null);
   const [insertError, setInsertError] = React.useState<any | null>(null);
   const genders: MenuProps['items'] = [
     {
@@ -57,24 +58,25 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
     setGender(selectedGender);
   };
 
-  const roles: MenuProps['items'] = [
-    {
-      label: 'Doctor',
-      key: 'Doctor',
-    },
-    {
-      label: 'Nurse',
-      key: 'Nurse',
-    },
-    {
-      label: 'Not stated',
-      key: 'notStated',
-    },
-  ];
-  const handleRolesClick = (e: any) => {
-    const selectedRole = e.key === 'notStated' ? null : e.key;
-    setRole(selectedRole);
-  };
+  // const roles: MenuProps['items'] = [
+  //   {
+  //     label: 'Doctor',
+  //     key: 'Doctor',
+  //   },
+  //   {
+  //     label: 'Nurse',
+  //     key: 'Nurse',
+  //   },
+  //   {
+  //     label: 'Not stated',
+  //     key: 'notStated',
+  //   },
+  // ];
+  // const handleRolesClick = (e: any) => {
+  //   const selectedRole = e.key === 'notStated' ? null : e.key;
+  //   setRole(selectedRole);
+  // };
+  
   //! fetch department data 
  
 
@@ -94,20 +96,23 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
 
 
     const { data, error } = await supabase
-      .from('employee')
+      .from('inpatient')
       .insert([
         {
           UniqueCode: generateId(),
+          IPCode: ipCode,
           FName: fname,
           LName: lname,
           Dob: birthdate,
           Gender: gender,
           Address: address,
-          DegreeName: degree,
-          DegreeYear: degreeYear,
-          StartDate: startDate,
-          Role: role,
-          DeptCode: department
+          Phone: phoneNumber,
+          AdmissionDate: admissionDate,
+          DateOfDischarge: dateOfDischarge,
+          SickRoom: sickRoom,
+          Fee: fee,
+          NCode: nCode,
+          Diagnosis: diagnosis,
         },
         // { FName: fname },
         // { LName: lname},
@@ -163,10 +168,10 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
         onClick={showModal}
 
       >
-        {<UserAddOutlined />} Add Employee
+        {<UserAddOutlined />} Add Inpatient
       </Button>
       <Modal
-        title={'Add employee'}
+        title={'Add inpatient'}
         open={modalVisible}
         onCancel={handleCancel}
         onOk={handleOk}
@@ -177,10 +182,12 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
         
       
         
-        
-
-
-
+        <Title level={5}>IP Code</Title>
+        <Input
+          value={ipCode}
+          onChange={(e) => setIPCode(e.target.value)}
+          placeholder={'Enter IPCode'}
+        />
         <Title level={5}>First Name</Title>
         <Input
           value={fname}
@@ -222,49 +229,47 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
           onChange={(phoneNumber) => {
             setPhoneNumber(phoneNumber.target.value);
           }}></Input>
-
-        <Title level={5}>Degree</Title>
-        <Input
-          value={degree}
-          onChange={(e) => setDegree(e.target.value)}
-          placeholder={'Enter degree name'}
-        />
-        <Title level={5}>Degree Year</Title>
-        <Input
-          value={degreeYear}
-          onChange={(e) => setDegreeYear(e.target.value)}
-          placeholder={'Enter degree year'}
-        />
-        <Title level={5}>Start Date</Title>
+        <Title level={5}>Admission Date</Title>
         <DatePicker
           size={'large'}
-          value={startDate}
+          value={admissionDate}
           onChange={(date) => {
-            setStartDate(date);
+            setAdmissionDate(date);
           }}></DatePicker>
-        <Title level={5}>Role</Title>
-
-        <Dropdown.Button
-
-          dropdownRender={() => (<Menu items={roles} onClick={handleRolesClick} />)}
-          trigger={['click']}
-          icon={<DownOutlined />}
-        >
-          {role === null ? 'Not Stated' : role || 'Select Role'}
-        </Dropdown.Button>
-
-        <Title level={5}>Department Name</Title>
-
-        <Select
-          
-          style={{ width: 150 }}
-          onChange={(deptCode:any)=>{setDepartment(deptCode)}}
-          options={optionSelect.map(item=>{return {value:item?.value ,
-          label:item?.label}})}
+          <Title level={5}>Date Of Discharge</Title>
+        <DatePicker
+          size={'large'}
+          value={dateOfDischarge}
+          onChange={(date) => {
+            setDateOfDischarge(date);
+          }}></DatePicker> 
+        <Title level={5}>Sick Room</Title>
+        <Input
+        value={sickRoom}
+        onChange={(e) => setSickRoom(e.target.value)}
+        placeholder={'Enter sick room'}
+        />
+        <Title level={5}>Fee</Title>
+        <Input
+        value={fee}
+        onChange={(e) => setFee(e.target.value)}
+        placeholder={'Enter fee'}
+        />
+        <Title level={5}>NCode</Title>
+        <Input
+        value={nCode}
+        onChange={(e) => setNCode(e.target.value)}
+        placeholder={'Enter NCode'}
+        />
+        <Title level={5}>Diagnosis</Title>
+        <Input
+        value={diagnosis}
+        onChange={(e) => setDiagnosis(e.target.value)}
+        placeholder={'Enter diagnosis'}
         />
       </Modal>
     </>
   );
 };
 
-export default AddEmployeeModal;
+export default AddInpatientModal;

@@ -5,7 +5,7 @@ import React from 'react';
 const HeaderTreatment = () => {
   return (
     <div>
-      <Card className="flex items-center justify-between rounded-b-[0px]">
+      <Card className="flex items-center justify-between">
         <div className="">
           <Input suffix={<SearchOutlined />} />
         </div>
