@@ -20,7 +20,10 @@ const DetailSection = ({ dataSource }: DetailsTreatmentProps) => {
   const [departureNurse, setDepartureNurse] = useState<string>('');
   const [patientExam, setPatientExam] = useState<any>();
   const [patientBatch, setPatientBatch] = useState<any>();
+
+  const [loading, setLoading] = useState<boolean>(false);
   useEffect(() => {
+    setLoading(true);
     const fetchDetail = async () => {
       if (treatment_id == '') {
         return;
@@ -42,6 +45,7 @@ const DetailSection = ({ dataSource }: DetailsTreatmentProps) => {
 
       setDepartureNurse(tmpDeptCodeNurse);
       setTreatmentQuery(dataSource[findVisitorById]);
+      setLoading(false);
     };
     fetchDetail();
   }, [dataSource, treatment_id]);
@@ -110,6 +114,7 @@ const DetailSection = ({ dataSource }: DetailsTreatmentProps) => {
         <div className="grid lg:grid-cols-2 grid-cols-1 gap-[1rem]">
           <Card
             bordered={true}
+            loading={loading}
             className="border-[2px]"
             bodyStyle={{ padding: '1rem' }}>
             <div className="flex gap-[1rem] items-center">
@@ -170,6 +175,7 @@ const DetailSection = ({ dataSource }: DetailsTreatmentProps) => {
           </Card>
           <Card
             bordered={true}
+            loading={loading}
             className="border-[2px]"
             bodyStyle={{ padding: '1rem' }}>
             <div className="flex gap-[1rem] items-center">
@@ -229,6 +235,7 @@ const DetailSection = ({ dataSource }: DetailsTreatmentProps) => {
           </Card>
           <Card
             bordered={true}
+            loading={loading}
             className="border-[2px]"
             bodyStyle={{ padding: '1rem' }}>
             <div className="flex gap-[1rem] items-center">
@@ -290,6 +297,7 @@ const DetailSection = ({ dataSource }: DetailsTreatmentProps) => {
         </div>
         <Card
           bordered={true}
+          loading={loading}
           className="border-[2px] mt-[1rem]"
           bodyStyle={{ padding: '1rem' }}>
           <div className="flex gap-[1rem] items-center">
@@ -344,6 +352,7 @@ const DetailSection = ({ dataSource }: DetailsTreatmentProps) => {
           <div className="mt-[1rem] grid lg:grid-cols-2 grid-cols-1 gap-[1rem]">
             <Card
               bordered={true}
+              loading={loading}
               className="border-[2px] mb-[1rem]"
               bodyStyle={{ padding: '1rem' }}>
               <div className="flex gap-[1rem] items-center">
@@ -379,6 +388,7 @@ const DetailSection = ({ dataSource }: DetailsTreatmentProps) => {
             </Card>
             <Card
               bordered={true}
+              loading={loading}
               className="border-[2px] mb-[1rem]"
               bodyStyle={{ padding: '1rem' }}>
               <div className="flex gap-[1rem] items-center">
