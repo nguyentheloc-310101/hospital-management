@@ -6,39 +6,38 @@ import { Alert } from 'antd';
 import { CustomTable } from '@/components/common/table/TableCustom';
 import { MenuProps } from 'antd';
 import { Table } from 'antd/lib';
-import { DeleteTwoTone, EditOutlined, EditTwoTone, SaveTwoTone } from '@ant-design/icons';
-
-
-
-
-
+import {
+  DeleteTwoTone,
+  EditOutlined,
+  EditTwoTone,
+  SaveTwoTone,
+} from '@ant-design/icons';
 
 const EmployeeTable = () => {
-  const [form] = Form.useForm()
-  const [fetchError, setFetchError] = React.useState<any>(null)
-  const [data, setData] = React.useState<any>([])
+  const [form] = Form.useForm();
+  const [fetchError, setFetchError] = React.useState<any>(null);
+  const [data, setData] = React.useState<any>([]);
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase.from('employee').select('*,department:DeptCode(Title)') // ! query based on equal DeptCode 
-      if (data)
-        setData(data);
+      const { data, error } = await supabase
+        .from('employee')
+        .select('*,department:DeptCode(Title)'); // ! query based on equal DeptCode
+      if (data) setData(data);
       // console.log(data) //! for testing
-      console.log(data)
+      console.log(data);
       setFetchError(null);
       if (error) {
-        const errorMessage = error.message || "An error occured"
-        setFetchError(errorMessage)
+        const errorMessage = error.message || 'An error occured';
+        setFetchError(errorMessage);
       }
     };
-
 
     fetchData();
   }, []);
 
-  const [deleteRow,setDeleteRow] = React.useState<any>(null)
-  const [editingRow, setEditingRow] = React.useState<any>(null)
-  // * ROUTER FOR feature : click for expanding detail 
-
+  const [deleteRow, setDeleteRow] = React.useState<any>(null);
+  const [editingRow, setEditingRow] = React.useState<any>(null);
+  // * ROUTER FOR feature : click for expanding detail
 
   const columns = [
     {
@@ -62,25 +61,23 @@ const EmployeeTable = () => {
 
       render: (_: any, record: any) => {
         if (editingRow === record.UniqueCode) {
-          return (<Form.Item
-            name="LName"
-            rules={[
-              {
-                required: true,
-                message: `Enter last name`,
-              }
-            ]}
-          >
-            <Input></Input>
-          </Form.Item>
-          )
-        }
-        else {
-          return <div>{record.LName}</div>
+          return (
+            <Form.Item
+              name="LName"
+              rules={[
+                {
+                  required: true,
+                  message: `Enter last name`,
+                },
+              ]}>
+              <Input></Input>
+            </Form.Item>
+          );
+        } else {
+          return <div>{record.LName}</div>;
         }
       },
       // sorter: (a: any, b: any) => {
-
 
       //   a.LName?.localeCompare(b.LName)
 
@@ -132,7 +129,7 @@ const EmployeeTable = () => {
       title: 'Department',
       dataIndex: 'DeptCode',
       key: 'DeptCode',
-      render: (_: any, record: any) => (<div>{record.department?.Title}</div>),
+      render: (_: any, record: any) => <div>{record.department?.Title}</div>,
       sorter: (a: any, b: any) => a.DeptCode?.localeCompare(b.DeptCode),
     },
 
@@ -143,37 +140,33 @@ const EmployeeTable = () => {
     //   // sorter: (a:any, b:any)=> a.Title.localeCompare(b.Title),
     // },
     {
-      title: "Action",
+      title: 'Action',
       render: (_: any, record: any) => {
         return (
-          <div className='flex space-x-4'>
-            <Button icon={<EditTwoTone />}
-              onClick={
-                () => {
-                  setEditingRow(record.UniqueCode);
-                  
-                  form.setFieldValue
-                  {
-                    LName: record.LName
-                  }
-                }} ></Button>
-            <Button icon={<SaveTwoTone />} htmlType='submit'></Button>
-            <Button icon={<DeleteTwoTone />} onClick={
-                () => {
-                  setDeleteRow(record.UniqueCode);
-                  
-                  
-                }}></Button>
+          <div className="flex space-x-4">
+            <Button
+              icon={<EditTwoTone />}
+              onClick={() => {
+                setEditingRow(record.UniqueCode);
+
+                form.setFieldValue;
+                {
+                  LName: record.LName;
+                }
+              }}></Button>
+            <Button
+              icon={<SaveTwoTone />}
+              htmlType="submit"></Button>
+            <Button
+              icon={<DeleteTwoTone />}
+              onClick={() => {
+                setDeleteRow(record.UniqueCode);
+              }}></Button>
           </div>
-
-
-
-        )
-      }
-    }
-
+        );
+      },
+    },
   ];
-
 
   //const router = useRouter();
   // const searchParams = useSearchParams();
@@ -185,75 +178,72 @@ const EmployeeTable = () => {
   //     router.push(`/dashboard/employees/id=${id}&details=false`);
   //   }
   // };
-// !const onSubmit = async () =>
-// {
-//   const{data,error} = await supabase.from('employee').update('*').eq('UniqueCode',editingRow).select()
-//   if(error)
-//   {
-//     message.error(error.message)
+  // !const onSubmit = async () =>
+  // {
+  //   const{data,error} = await supabase.from('employee').update('*').eq('UniqueCode',editingRow).select()
+  //   if(error)
+  //   {
+  //     message.error(error.message)
 
-//   }
-//   if(data)
-//   {
-//     console.log(data)
-    
-//   }
-// }
+  //   }
+  //   if(data)
+  //   {
+  //     console.log(data)
 
-useEffect(() => {
-  if(deleteRow!==null)
-  {
-    handleDelete()
-  }
-}, [deleteRow]);
-const handleDelete = async()=>
-{
-  console.log("Index to delete",deleteRow)
-  const{data,error} = await supabase.from('employee').delete().eq('UniqueCode',deleteRow)
-  if(error)
-  {
-    message.error(error.message)
-  }
-  if(data)
-  {
-    console.log(data)
-  }
+  //   }
+  // }
 
-}
+  useEffect(() => {
+    if (deleteRow !== null) {
+      handleDelete();
+    }
+  }, [deleteRow]);
+  const handleDelete = async () => {
+    console.log('Index to delete', deleteRow);
+    const { data, error } = await supabase
+      .from('employee')
+      .delete()
+      .eq('UniqueCode', deleteRow);
+    if (error) {
+      message.error(error.message);
+    }
+    if (data) {
+      console.log(data);
+    }
+  };
   const onFinish = async (values: any) => {
-    console.log(values)
+    console.log(values);
     const updateDataSource = [...data];
 
     // Find the index of the editingRow in the array
-    const rowIndex = updateDataSource.findIndex((item) => item.UniqueCode === editingRow);
-    console.log(rowIndex)
+    const rowIndex = updateDataSource.findIndex(
+      (item) => item.UniqueCode === editingRow
+    );
+    console.log(rowIndex);
     // If the editingRow is found, update only the specified values
     if (rowIndex !== -1) {
       updateDataSource[rowIndex] = { ...updateDataSource[rowIndex], ...values };
       const { data: updatedData, error } = await supabase
-      .from('employee')
-      .update({ ...values })
-      .eq('UniqueCode', editingRow)
-      
+        .from('employee')
+        .update({ ...values })
+        .eq('UniqueCode', editingRow);
 
-    if (error) {
-      message.error(error.message);
+      if (error) {
+        message.error(error.message);
+      } else {
+        console.log(updatedData);
+      }
     } else {
-      console.log(updatedData);
+      return;
     }
-    }
-    else
-    {
-      return
-    }
-    console.log(updateDataSource)
+    console.log(updateDataSource);
     // Update the state with the modified array
     setData(updateDataSource);
-    console.log(editingRow)
+    console.log(editingRow);
     // Reset editingRow to null
-    
-    setEditingRow(null)
-  }
+
+    setEditingRow(null);
+  };
 
   return (
     <>
@@ -274,24 +264,21 @@ const handleDelete = async()=>
         columns={columns}
         dataSource={data}
       /> */}
-      <Form form={form} onFinish={onFinish}>
-
-        <Table dataSource={data}
+      <Form
+        form={form}
+        onFinish={onFinish}>
+        <Table
+          dataSource={data}
           columns={columns}
-
           // style={{maxWidth:'max-content'}}
-          scroll={{ x: true }}
-        ></Table>
+          scroll={{ x: true }}></Table>
       </Form>
 
-
-      {
-        fetchError && (
-          <Alert message={fetchError} type='error'></Alert> //? conditional rendering? 
-        )
-      }
-
-
+      {fetchError && (
+        <Alert
+          message={fetchError}
+          type="error"></Alert> //? conditional rendering?
+      )}
     </>
   );
 };
