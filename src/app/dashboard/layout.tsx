@@ -7,7 +7,7 @@ import {
   RollbackOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Button, Layout, Menu, MenuProps, theme } from 'antd';
+import { Button, Dropdown, Layout, Menu, MenuProps, Space, theme } from 'antd';
 import { usePathname, useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -25,16 +25,23 @@ export default function DashboardLayout({
   const pathname = usePathname();
   const [collapsed, setCollapsed] = useState(false);
   const [headerName, setHeaderName] = useState<string>('');
+  const [user, setUser] = useState('');
   useEffect(() => {
     setHeader();
   }, [pathname]);
+  useEffect(() => {
+    checkAuth();
+  }, []);
+  const checkAuth = () => {
+    const storage_user: any = localStorage.getItem('user_info');
 
+    if (storage_user) {
+      setUser(storage_user);
+    } else {
+      router.push('/login');
+    }
+  };
   const items: MenuProps['items'] = [
-    {
-      label: 'profile',
-      key: '/dashboard/profile',
-      icon: <UserOutlined />,
-    },
     {
       label: <p style={{ color: 'red' }}>log out</p>,
       key: '/login',
@@ -151,7 +158,14 @@ export default function DashboardLayout({
           style={{ padding: 0 }}
           className=" font-bold w-full lg:text-[18px] text-[12px] bg-[white] relative top-0 flex items-center justify-between ">
           <div className="uppercase"> {headerName}</div>
-          <div className="mr-[2rem] lg:block hidden">username</div>
+          <Dropdown
+            menu={menuProps}
+            trigger={['click']}
+            placement="bottomRight"
+            arrow={{ pointAtCenter: true }}
+            className="cursor-pointer font-[500] ]">
+            <Space className="block mr-[2rem] font-bold">{user}</Space>
+          </Dropdown>
         </Header>
         <Content
           style={{

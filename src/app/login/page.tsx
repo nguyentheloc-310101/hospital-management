@@ -14,7 +14,7 @@ export default function Login() {
   }, []);
   const checkAuth = () => {
     const storage_user: any = localStorage.getItem('user_info');
-    console.log('storage_users', storage_user);
+
     if (storage_user) router.push('/dashboard/treatments');
     else {
       router.push('/login');
@@ -35,7 +35,7 @@ export default function Login() {
     }
     const check = data.filter((item) => item?.email == email);
     if (check.length > 0) {
-      window.localStorage.setItem('user_info', JSON.stringify(email));
+      window.localStorage.setItem('user_info', data[0].name);
       router.push('/dashboard/treatments');
     } else {
       message.error('Please check your email or password');
