@@ -4,3 +4,4 @@ export const thirdColor = '#ebfaff';
 
 //text is already defined in antd theme config
 export const textColor = '#143d55';
+//
