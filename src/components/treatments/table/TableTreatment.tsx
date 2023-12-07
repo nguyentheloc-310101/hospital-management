@@ -205,7 +205,7 @@ const TableTreatment = ({
               dataSource={[...formatData]}
               scroll={{
                 x: `${detail} == 'false' ?? 1000px`,
-                y: `calc(100vh - 21rem)`,
+                y: `calc(100vh - 24rem)`,
               }}
             />
           </TableSkeleton>

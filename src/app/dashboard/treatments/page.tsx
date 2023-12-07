@@ -123,10 +123,12 @@ const TreatmentPage = () => {
           item.treatment.PCode?.FName +
           item.treatment.PCode?.Diagnosis +
           item.treatment.PCode?.SickRoom +
-          item.treatment.PCode
+          item.treatment?.PCode +
+          item.doctor?.UniqueCode +
+          item.doctor?.LName +
+          item.doctor?.FName
       );
     });
-
     setLoading(false);
     setDataSource(tmp);
   };
