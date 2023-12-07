@@ -53,16 +53,28 @@ export default function DashboardLayout({
       label: 'Employees',
     },
     {
-      key: '/dashboard/patients',
-      icon: <UserOutlined />,
-      label: 'Patients',
+      key: '/dashboard/inpatients',
+      icon: <MedicineBoxOutlined />,
+      label: 'Inpatients',
     },
+    {
+      key: '/dashboard/outpatients',
+      icon: <MedicineBoxOutlined />,
+      label: 'Outpatients',
+    },
+    // {
+    //   key: '/dashboard/patients',
+    //   icon: <UserOutlined />,
+    //   label: 'Patients',
+    // },
   ];
   const setHeader = () => {
     if (pathname == '/dashboard/treatments') {
       setHeaderName('treatments management');
-    } else if (pathname == '/dashboard/patients') {
-      setHeaderName('patients management');
+    } else if (pathname == '/dashboard/inpatients') {
+      setHeaderName('inpatients information');
+    } else if (pathname == '/dashboard/outpatients') {
+      setHeaderName('outpatients information');
     } else if (pathname == '/dashboard/employees') {
       setHeaderName('employees information');
     } else {
@@ -93,13 +105,13 @@ export default function DashboardLayout({
     setCollapsed(!collapsed);
   };
   return (
-    <Layout className=" overflow-hidden">
+    <Layout className="max-h-[1440px] overflow-hidden">
       <Sider
         breakpoint="lg"
         collapsedWidth="4rem"
         trigger={null}
         collapsible
-        style={{ backgroundColor: '#fff', height: 'auto' }}
+        style={{ backgroundColor: '#fff', height: '100vh' }}
         collapsed={collapsed}
         onCollapse={(value) => setCollapsed(value)}>
         <div
