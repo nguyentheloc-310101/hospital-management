@@ -3,6 +3,7 @@ import HeaderTreatment from '@/components/treatments/header/HeaderTreatment';
 import TableTreatment from '@/components/treatments/table/TableTreatment';
 import DetailSection from '@/components/treatments/table/details/DetailSection';
 import { supabase } from '@/services/supabase/supabase-client';
+import useDepartment from '@/stores/departments';
 import useTreatment from '@/stores/treatment';
 import { message } from 'antd';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
@@ -15,7 +16,7 @@ const TreatmentPage = () => {
   const detailStatus = searchParams.get('detail');
   const currentId = searchParams.get('treatment_id');
   const { setAllTreatment } = useTreatment();
-
+  const { setAllDepartment } = useDepartment();
   const [dataSource, setDataSource] = useState<any[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -31,7 +32,14 @@ const TreatmentPage = () => {
       const { data: department, error: errDepartment } = await supabase
         .from('department')
         .select('*');
-
+      if (department) {
+        setAllDepartment(department);
+      }
+      if (errDepartment) {
+        message.error(errDepartment.message);
+        setLoading(false);
+        return;
+      }
       //fetch all data treatment_use//
       const { data: allTreatUse, error: errTreatUse } = await supabase
         .from('treatment_use')
