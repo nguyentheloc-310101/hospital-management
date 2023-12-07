@@ -1,3 +1,4 @@
+'use client'
 import { CustomTable } from '@/components/common/table/TableCustom';
 import { TableTreatmentProps } from '@/types/props';
 import Table, { ColumnsType } from 'antd/es/table';
