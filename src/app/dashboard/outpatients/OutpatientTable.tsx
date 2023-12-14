@@ -1,29 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { Table } from 'antd';
-import { supabase } from '@/services/supabase/supabase-client';
-import { error } from 'console';
-import { Alert } from 'antd';
-import { CustomTable } from '@/components/common/table/TableCustom';
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { Alert, Table } from 'antd';
+import React, { useEffect } from 'react';
 
 import {
-  Card,
-  Dropdown,
-  Flex,
-  Input,
-  Menu,
-  MenuProps,
-  Modal,
-  Typography,
+  Typography
 } from 'antd';
-import { DatePicker } from 'antd/lib';
-import { DownOutlined } from '@ant-design/icons';
+import { supabase } from '@/services/supabase/supabase-client';
 
-import { Button } from 'antd/lib/radio';
-import { UserAddOutlined } from '@ant-design/icons';
-import { useSearchParams } from 'next/navigation';
-import { Select } from 'antd';
-import { generateId } from '@/utils/generate-id';
 const { Title } = Typography;
 const columns = [
   {
@@ -96,42 +79,7 @@ const columns = [
     },
   },
 
-  // {
-  //   title: 'Admission Date',
-  //   dataIndex: 'AdmissionDate',
-  //   key: 'AdmissionDate',
-  //   sorter: (a:any, b:any)=> a.AdmissionDate.localeCompare(b.AdmissionDate),
-  // },
-  // {
-  //   title: 'Date Of Discharge',
-  //   dataIndex: 'DateOfDischarge',
-  //   key: 'DateOfDischarge',
-  //   sorter: (a:any, b:any)=> a.DateOfDischarge.localeCompare(b.DateOfDischarge),
-  // },
-  // {
-  //   title: 'Sick Room',
-  //   dataIndex: 'SickRoom',
-  //   key: 'SickRoom',
-  //   sorter: (a:any, b:any)=> a.SickRoom.localeCompare(b.SickRoom),
-  // },
-  // {
-  //   title: 'Fee',
-  //   dataIndex: 'Fee',
-  //   key: 'Fee',
-  //   sorter: (a:any, b:any)=> a.Fee.localeCompare(b.Fee),
-  // },
-  // {
-  //   title: 'NCode',
-  //   dataIndex: 'NCode',
-  //   key: 'NCode',
-  //   sorter: (a:any, b:any)=> a.NCode.localeCompare(b.NCode),
-  // },
-  // {
-  //   title: 'Diagnosis',
-  //   dataIndex: 'Diagnosis',
-  //   key: 'Diagnosis',
-  //   sorter: (a:any, b:any)=> a.Diagnosis.localeCompare(b.Diagnosis),
-  // },
+ 
 ];
 
 const handleDelete = async (record: any) => {
@@ -150,17 +98,7 @@ const handleUpdate = async (record: any) => {
 };
 
 const OutpatientTable = () => {
-  // * ROUTER FOR feature : click for expanding detail
-  //const router = useRouter();
-  // const searchParams = useSearchParams();
-  // const onChangeRow = (id: string) => {
-  //   const detailStatus = searchParams.get('details');
-  //   if (detailStatus == 'false' || detailStatus == '')
-  //     router.push(`/dashboard/Outpatients/id=${id}&details=true`);
-  //   else {
-  //     router.push(`/dashboard/Outpatients/id=${id}&details=false`);
-  //   }
-  // };
+ 
   const [fetchError, setFetchError] = React.useState<any>(null);
   const [data, setData] = React.useState<any>([]);
   useEffect(() => {

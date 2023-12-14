@@ -1,22 +1,18 @@
 // DoctorsPage.js
 'use client';
-import React, { useEffect, useState } from 'react';
+import { supabase } from '@/services/supabase/supabase-client';
 import {
-  Button,
   Card,
   Col,
-  FloatButton,
   Input,
   Tabs,
   Typography,
-  message,
+  message
 } from 'antd';
-import { UserAddOutlined } from '@ant-design/icons';
-import AddOutpatientModal from './AddOutpatientModal';
-import UpdateOutpatientModal from './UpdateOutpatientModal';
-import OutpatientTable from '@/app/dashboard/outpatients/OutpatientTable'; // Import the new component
 import { useRouter, useSearchParams } from 'next/navigation';
-import { supabase } from '@/services/supabase/supabase-client';
+import { useEffect, useState } from 'react';
+import AddOutpatientModal from './AddOutpatientModal';
+import OutpatientTable from './OutpatientTable';
 
 const { Title } = Typography;
 const { Search } = Input;

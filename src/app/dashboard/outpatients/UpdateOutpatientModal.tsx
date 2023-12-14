@@ -2,7 +2,6 @@
 'use client';
 import { supabase } from '@/services/supabase/supabase-client';
 import { Card, Col, Input, Tabs, Typography, message } from 'antd';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import AddOutpatientModal from './AddOutpatientModal';
 import OutpatientTable from './OutpatientTable';
