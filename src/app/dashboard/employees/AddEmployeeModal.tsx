@@ -15,10 +15,7 @@ import { generateId } from '@/utils/generate-id';
 import { clear } from 'console';
 
 const { Title } = Typography;
-//TODO: fix -> gom vao props
-//TODO: lay het record tu supabase ve xong roi console.log ra.
 
-//TODO: tao zustand (store) luu cac thong tin employee fetch ve./
 interface AddEmployeeModalProps {
   optionSelect: any[],
 }
@@ -89,7 +86,7 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
     setDegreeYear(null);
     setRole(null);
     setDepartment(null);
-    setInsertError(null);
+    setInsertError(null);//
   }
 
 
@@ -106,12 +103,22 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
       return
     }
 
-
+   const id = generateId()
+  //  const{data:dataPhone, error:errorPhone} = await supabase
+  //  .from("employee_phone")
+  //  .insert([{
+  //   UniqueCode:id,
+  //   Phone:phoneNumber
+  //  }])
+  //  if(errorPhone)
+  //  {
+    
+  //  }
     const { data, error } = await supabase
       .from('employee')
       .insert([
         {
-          UniqueCode: generateId(),
+          UniqueCode: id,
           FName: fname,
           LName: lname,
           Dob: birthdate,
@@ -176,7 +183,6 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
 
         type="primary"
         onClick={showModal}
-
       >
         {<UserAddOutlined />} Add Employee
       </Button>
@@ -188,14 +194,6 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
         okText={'Add'}
         okButtonProps={{ style: { backgroundColor: '#16ABF2' } }}
         confirmLoading={confirmLoading}>
-
-
-
-
-
-
-
-
         <Title level={5}>First Name</Title>
         <Input
           value={fname}
@@ -230,13 +228,13 @@ const AddEmployeeModal = ({ optionSelect }: AddEmployeeModalProps) => {
           onChange={(e) => setAddress(e.target.value)}
           placeholder={'Enter address'}
         />
-        <Title level={5}>Phone</Title>
+        {/* <Title level={5}>Phone</Title>
         <Input
           placeholder={'Enter phone number'}
           value={phoneNumber}
           onChange={(phoneNumber) => {
             setPhoneNumber(phoneNumber.target.value);
-          }}></Input>
+          }}></Input> */}
 
         <Title level={5}>Degree</Title>
         <Input
