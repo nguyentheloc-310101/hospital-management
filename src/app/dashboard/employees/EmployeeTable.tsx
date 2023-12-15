@@ -38,21 +38,19 @@ const EmployeeTable = () => {
 
   const [deleteRow, setDeleteRow] = React.useState<any>(null);
   const [editingRow, setEditingRow] = React.useState<any>(null);
-  const [employeeSelected, setEmployeeSelected] = React.useState('')
+  const [employeeSelected, setEmployeeSelected] = React.useState('');
   // * ROUTER FOR feature : click for expanding detail
-  const [editModal, setEditModal] = useState<boolean>(false)
+  const [editModal, setEditModal] = useState<boolean>(false);
   const columns = [
     {
       title: 'Employee ID',
       dataIndex: 'UniqueCode',
       key: 'UniqueCode',
-
     },
     {
       title: 'First Name',
       dataIndex: 'FName',
       key: 'FName',
-
     },
     {
       title: 'Last Name',
@@ -138,7 +136,11 @@ const EmployeeTable = () => {
           <div className="flex space-x-4">
             <Button
               icon={<EditTwoTone />}
-              onClick={() => { setEditModal(true); setEmployeeSelected(record) }} />
+              onClick={() => {
+                setEditModal(true);
+                setEmployeeSelected(record);
+              }}
+            />
 
             <Button
               icon={<DeleteTwoTone />}
@@ -150,7 +152,6 @@ const EmployeeTable = () => {
       },
     },
   ];
-
 
   useEffect(() => {
     if (deleteRow !== null) {
@@ -206,13 +207,21 @@ const EmployeeTable = () => {
 
   return (
     <>
-    {editModal&&<ModalEditEmployee open={editModal} setOpen={setEditModal} employee={employeeSelected}/>}
+      {editModal && (
+        <ModalEditEmployee
+          setData={setData}
+          data={data}
+          open={editModal}
+          setOpen={setEditModal}
+          employee={employeeSelected}
+        />
+      )}
       <div>
         <Form
           form={form}
           onFinish={onFinish}>
           <Table
-            dataSource={data}
+            dataSource={[...data]}
             columns={columns}
             // style={{maxWidth:'max-content'}}
             scroll={{ x: true }}></Table>
@@ -225,7 +234,6 @@ const EmployeeTable = () => {
         )}
       </div>
     </>
-
   );
 };
 
