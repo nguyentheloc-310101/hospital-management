@@ -26,6 +26,7 @@ const ModalEditEmployee = ({
   const dateStart = dayjs(employee?.StartDate).format('YYYY-MM-DD');
   const birth = dayjs(employee?.Dob).format('YYYY-MM-DD');
   const [startDate, setStartDate] = useState<string>(dateStart);
+  const [dept, setDept] = useState<string>(employee?.DeptCode);
   const [Dob, setDob] = useState<string>(birth);
 
   useEffect(() => {
@@ -60,7 +61,7 @@ const ModalEditEmployee = ({
       DegreeName: value?.DegreeName,
       DegreeYear: value?.DegreeYear,
       Role: value?.Role,
-      DeptCode: value.Department,
+      DeptCode: dept,
       Dob: Dob,
       StartDate: startDate,
     };
@@ -118,7 +119,7 @@ const ModalEditEmployee = ({
           DegreeName: employee?.DegreeName,
           DegreeYear: employee?.DegreeYear,
           Role: employee?.Role,
-          Department: employee?.department.DeptCode,
+          Department: employee?.DeptCode,
         }}>
         <div className="grid grid-cols-2 gap-[1rem]">
           <InputForm
@@ -145,14 +146,12 @@ const ModalEditEmployee = ({
           <Form.Item
             label="Gender"
             name="Gender">
-            <Select>
-              <Select
-                options={[
-                  { value: 'Male', label: 'Male' },
-                  { value: 'Female', label: 'Female' },
-                ]}
-              />
-            </Select>
+            <Select
+              options={[
+                { value: 'Male', label: 'Male' },
+                { value: 'Female', label: 'Female' },
+              ]}
+            />
           </Form.Item>
         </div>
         <div>
@@ -200,7 +199,7 @@ const ModalEditEmployee = ({
           name="Department">
           <Select
             options={department}
-            onSelect={(e: any) => console.log('dept', e)}
+            onSelect={(e: any) => setDept(e)}
           />
         </Form.Item>
       </Form>
