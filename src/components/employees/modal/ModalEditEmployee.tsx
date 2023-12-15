@@ -1,11 +1,9 @@
-import DatePickerV2 from '@/components/common/datepicker/DatePicker';
 import InputForm from '@/components/common/input/InputForm';
-import InputPhoneNumber from '@/components/common/input/inputPhone';
 import { supabase as subbase } from '@/services/supabase/supabase-client';
 import { Button, DatePicker, Form, Modal, Select } from 'antd';
 import message from 'antd/lib/message';
-import dayjs, { Dayjs } from 'dayjs';
-import React, { useEffect, useRef, useState } from 'react';
+import dayjs from 'dayjs';
+import { useEffect, useRef, useState } from 'react';
 interface ModalEditEmployeeProps {
   open: boolean;
   setOpen: (e: boolean) => void;
@@ -51,7 +49,6 @@ const ModalEditEmployee = ({
     };
     fetchDepartment();
   }, []);
-  console.log(employee);
 
   const handleEditEmployee = async (value: any) => {
     const employeeInform = {
@@ -67,9 +64,8 @@ const ModalEditEmployee = ({
       Dob: Dob,
       StartDate: startDate,
     };
-    console.log('employeeInform edit', employeeInform);
 
-    const { data: dateRes, error } = await subbase
+    const { error } = await subbase
       .from('employee')
       .update([employeeInform])
       .eq('UniqueCode', employee.UniqueCode);
