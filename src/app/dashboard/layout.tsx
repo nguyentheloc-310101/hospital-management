@@ -138,7 +138,7 @@ export default function DashboardLayout({
             className={`cursor-pointer ${
               collapsed ? 'hidden' : 'lg:block hidden'
             } `}>
-            Logo here
+            BKU Clinic
           </div>
           <Button
             type="text"
