@@ -51,6 +51,7 @@ const ModalEditEmployee = ({ open, setOpen, employee }: ModalEditEmployeeProps) 
             open={open}
             onOk={() => setOpen(false)}
             onCancel={() => setOpen(false)}
+            okButtonProps={{ style: { backgroundColor: '#16ABF2' } }}
         >
             <Form layout="vertical" initialValues={{ FName: employee?.FName,
                  LName: employee?.LName, 
