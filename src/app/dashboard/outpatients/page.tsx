@@ -13,6 +13,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import AddOutpatientModal from './AddOutpatientModal';
 import OutpatientTable from './OutpatientTable';
+import React from 'react';
 
 const { Title } = Typography;
 const { Search } = Input;
@@ -41,11 +42,44 @@ const OutpatientsPage = () => {
   const [activeDetail, setActiveDetail] = useState(false);
   const [department, setDepartment] = useState<any[]>([]);
   const [optionDepartment, setOptionDepartment] = useState<any[]>([]);
+  const [dataInPatient, setDataInpatient] = useState<any>([])
   //useEffect (()=>{},[Name])
   //tao zustand (store) luu cac thong tin Outpatient fetch ve
   useEffect(() => {
     fetchDeparment();
   }, []);
+  useEffect(() => {
+
+    const fetchInPatient = async () => {
+      let { data: inpatient, error } = await supabase
+        .from('inpatient')
+        .select('*')
+        if(inpatient){
+          console.log('inpatient', inpatient)
+          setDataInpatient(inpatient)
+        }
+        if(error){
+          message.error(error.message)
+          return;
+        }
+    }
+    fetchInPatient();
+  }, [])
+
+  const [data, setData] = React.useState<any>([]);
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase.from('outpatient').select(); // ! query based on equal DeptCode
+      if (data) setData(data);
+
+      if (error) {
+        message.error(error.message);
+        return;
+      }
+    };
+
+    fetchData();
+  }, [])
 
   const fetchDeparment = async () => {
     const { data, error } = await supabase
@@ -74,9 +108,8 @@ const OutpatientsPage = () => {
           title={'OUTPATIENTS INFORMATION'}
           extra={
             <>
-              <AddOutpatientModal optionSelect={[...optionDepartment]} />
-              {/* <UpdateOutpatientModal/> */}
-              {/*    can add some components here*/}
+              <AddOutpatientModal dataInPatient={dataInPatient} data={[...data]} />
+
             </>
           }>
           {/* <Tabs

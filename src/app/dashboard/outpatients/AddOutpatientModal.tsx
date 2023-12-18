@@ -1,22 +1,29 @@
 // AddOutpatientModal.js
 
 import { DownOutlined } from '@ant-design/icons';
-import { Dropdown, Input, Menu, MenuProps, Modal, Typography } from 'antd';
+import { Dropdown, Form, Input, Menu, MenuProps, Modal, Select, Typography, message } from 'antd';
 import { DatePicker } from 'antd/lib';
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 
 import { supabase } from '@/services/supabase/supabase-client';
 import { generateId } from '@/utils/generate-id';
 import { UserAddOutlined } from '@ant-design/icons';
 import { Button } from 'antd/lib/radio';
 import { useState } from 'react';
+import dayjs from 'dayjs';
+import InputForm from '@/components/common/input/InputForm';
+import InputPhoneNumber from '@/components/common/input/inputPhone';
 
 const { Title } = Typography;
 interface AddOutpatientModalProps {
-  optionSelect: any[];
+  dataInPatient: any,
+
+
+  data: any[];
+
 }
 
-const AddOutpatientModal = ({ optionSelect }: AddOutpatientModalProps) => {
+const AddOutpatientModal = ({ data, dataInPatient }: AddOutpatientModalProps) => {
   const [opCode, setOPCode] = React.useState('');
   const [fname, setFName] = React.useState('');
   const [lname, setLName] = React.useState('');
@@ -24,8 +31,14 @@ const AddOutpatientModal = ({ optionSelect }: AddOutpatientModalProps) => {
   const [gender, setGender] = React.useState<any | null>(null);
   const [address, setAddress] = React.useState<any | null>(null);
   const [phoneNumber, setPhoneNumber] = React.useState<any | null>('');
-
+  const [department, setDepartment] = useState<any[]>([]);
   const [insertError, setInsertError] = React.useState<any | null>(null);
+  const [form] = Form.useForm();
+  const [startDate, setStartDate] = useState<string>('');
+  const [dept, setDept] = useState<string>('');
+  const [Dob, setDob] = useState<string>('');
+  const formRef = useRef<any>(null);
+
   const genders: MenuProps['items'] = [
     {
       label: 'Male',
@@ -45,89 +58,52 @@ const AddOutpatientModal = ({ optionSelect }: AddOutpatientModalProps) => {
     setGender(selectedGender);
   };
 
-  // const roles: MenuProps['items'] = [
-  //   {
-  //     label: 'Doctor',
-  //     key: 'Doctor',
-  //   },
-  //   {
-  //     label: 'Nurse',
-  //     key: 'Nurse',
-  //   },
-  //   {
-  //     label: 'Not stated',
-  //     key: 'notStated',
-  //   },
-  // ];
-  // const handleRolesClick = (e: any) => {
-  //   const selectedRole = e.key === 'notStated' ? null : e.key;
-  //   setRole(selectedRole);
-  // };
+  ;
 
   //! fetch department data
 
   const [modalVisible, setModalVisible] = useState(false);
   const [confirmLoading, setConfirmLoading] = useState(false);
-  const handleSubmit = async () => {
-    if (!fname) {
-      //in case of inserting null to non null
-      setInsertError('First name or id cannot be set blank');
-      console.log(insertError);
+
+  const handleSubmit = async (value:any) => {
+    if(Dob==""){
+      message.error('dont let Day of birth null')
       return;
     }
+    else {
+      const { data, error } = await supabase
+        .from('outpatient')
+        .insert([
+          {
+            UniqueCode: generateId(),
+            OPCode: value?.OPCode,
+            FName: value?.FName,
+            LName: value?.LName,
+            Dob: Dob,
+            Gender: value?.Gender,
+            Address: value?.Address,
+            Phone: value?.phoneNumber,
+  
+          },
+  
+          // { DeptCode: department}
+        ])
 
-    const { data, error } = await supabase
-      .from('outpatient')
-      .insert([
-        {
-          UniqueCode: generateId(),
-          OPCode: opCode,
-          FName: fname,
-          LName: lname,
-          Dob: birthdate,
-          Gender: gender,
-          Address: address,
-          Phone: phoneNumber,
-          // AdmissionDate: admissionDate,
-          // DateOfDischarge: dateOfDischarge,
-          // SickRoom: sickRoom,
-          // Fee: fee,
-          // NCode: nCode,
-          // Diagnosis: diagnosis,
-        },
-        // { FName: fname },
-        // { LName: lname},
-        // { Dob: birthdate},
-        // { Gender: gender},
-        // { Address: address},
-        // { DegreeName:degree},
-        // { DegreeYear:degreeYear},
-        // { StartDate: startDate},
-        // { Role: role},
-        // { DeptCode: department}
-      ])
-      .select();
-    console.log(data);
-
-    if (error) {
-      console.log(error);
-      setInsertError(error);
-    }
-    if (data) {
       console.log(data);
-      setInsertError(null);
-      handleCancel();
-    }
-  };
-  const handleOk = () => {
-    setConfirmLoading(true);
-    setTimeout(() => {
+  
+      if (error) {
+        console.log(error);
+        message.error(error.message)
+      
+        return;
+      }
+   message.success('create success');
       setModalVisible(false);
       setConfirmLoading(false);
-      handleSubmit();
-      // This is where to handle the adding states to the database.
-    }, 2000);
+    }
+    
   };
+
   const showModal = () => {
     setModalVisible(true);
   };
@@ -136,6 +112,30 @@ const AddOutpatientModal = ({ optionSelect }: AddOutpatientModalProps) => {
     setModalVisible(false);
   };
 
+
+
+  useEffect(() => {
+    const fetchDepartment = async () => {
+      const { data: department, error: errDepartment } = await supabase
+        .from('department')
+        .select('*');
+      if (department) {
+        const dataFormat = department.map((item: any) => {
+          return {
+            value: item?.DeptCode,
+            label: item?.Title,
+          };
+        });
+        setDepartment(dataFormat);
+      }
+      if (errDepartment) {
+        message.error(errDepartment.message);
+        return;
+      }
+    };
+    fetchDepartment();
+  }, []);
+
   return (
     <>
       <Button
@@ -143,7 +143,7 @@ const AddOutpatientModal = ({ optionSelect }: AddOutpatientModalProps) => {
         onClick={showModal}>
         {<UserAddOutlined />} Add Outpatient
       </Button>
-      <Modal
+      {/* <Modal
         title={'Add outpatient'}
         open={modalVisible}
         onCancel={handleCancel}
@@ -202,6 +202,87 @@ const AddOutpatientModal = ({ optionSelect }: AddOutpatientModalProps) => {
           onChange={(phoneNumber) => {
             setPhoneNumber(phoneNumber.target.value);
           }}></Input>
+      </Modal> */}
+
+      <Modal
+        title="Add OutPatient"
+        centered
+        open={modalVisible}
+        onCancel={() => setModalVisible(false)}
+        footer={() => (
+          <div className="flex gap-2 justify-end">
+            <Button
+              onClick={() => setModalVisible(false)}
+              type="default">
+              cancel
+            </Button>
+            <Button
+              onClick={() => {
+                if (formRef.current) {
+                  formRef.current.submit();
+                }
+              }}
+              type="primary"
+              className="bg-[#169fed]">
+              Create
+            </Button>
+          </div>
+        )}>
+        <Form
+          layout="vertical"
+          form={form}
+          ref={formRef}
+        onFinish={ handleSubmit}
+        >
+          <InputForm
+            required
+            label={'OP Code'}
+            name="OPCode"
+          />
+          <div className="grid grid-cols-2 gap-[1rem]">
+            <InputForm
+              required
+              label={'First name'}
+              name="FName"
+            />
+            <InputForm
+              required
+              label={'Last name'}
+              name="LName"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-[1rem] mt-2">
+            <Form.Item
+              label="Date of Birth"
+              name="Dob">
+              <DatePicker
+                onChange={(e: any) => {
+                  setDob(dayjs(e).format('YYYY-MM-DD'));
+                }}
+                format={'YYYY-MM-DD'}
+              />
+            </Form.Item>
+            <Form.Item
+              label="Gender"
+              name="Gender">
+              <Select
+                options={[
+                  { value: 'Male', label: 'Male' },
+                  { value: 'Female', label: 'Female' },
+                ]}
+              />
+            </Form.Item>
+          </div>
+          <div>
+            <InputForm
+              label={'Address'}
+              name="Address"
+            />
+<InputPhoneNumber label={'Phone'} name={'phoneNumber'}/>
+          </div>
+         
+
+        </Form>
       </Modal>
     </>
   );

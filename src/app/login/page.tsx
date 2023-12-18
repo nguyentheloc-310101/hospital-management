@@ -29,8 +29,17 @@ export default function Login() {
     }
     const check = data.filter((item) => item?.email == email);
     if (check.length > 0) {
-      window.localStorage.setItem('user_info', data[0].name);
-      router.push('/dashboard/treatments');
+      const checkPassword = data.filter((item) => item.password == password)
+      if (checkPassword.length > 0) {
+        window.localStorage.setItem('user_info', data[0].name);
+
+        router.push('/dashboard/treatments');
+      }
+      else {
+        message.error('Please check your email or password');
+        router.push('/login');
+      }
+
     } else {
       message.error('Please check your email or password');
       return;

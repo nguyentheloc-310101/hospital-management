@@ -18,6 +18,11 @@ const EmployeeTable = () => {
   const [form] = Form.useForm();
   const [fetchError, setFetchError] = React.useState<any>(null);
   const [data, setData] = React.useState<any>([]);
+  const [deleteRow, setDeleteRow] = React.useState<any>(null);
+  const [editingRow, setEditingRow] = React.useState<any>(null);
+  const [employeeSelected, setEmployeeSelected] = React.useState('');
+  // * ROUTER FOR feature : click for expanding detail
+  const [editModal, setEditModal] = useState<boolean>(false)
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase
@@ -36,11 +41,7 @@ const EmployeeTable = () => {
     fetchData();
   }, []);
 
-  const [deleteRow, setDeleteRow] = React.useState<any>(null);
-  const [editingRow, setEditingRow] = React.useState<any>(null);
-  const [employeeSelected, setEmployeeSelected] = React.useState('');
-  // * ROUTER FOR feature : click for expanding detail
-  const [editModal, setEditModal] = useState<boolean>(false);
+ ;
   const columns = [
     {
       title: 'Employee ID',
@@ -75,11 +76,7 @@ const EmployeeTable = () => {
           return <div>{record.LName}</div>;
         }
       },
-      // sorter: (a: any, b: any) => {
-
-      //   a.LName?.localeCompare(b.LName)
-
-      // },
+     
     },
     {
       title: 'DOB',
@@ -146,6 +143,7 @@ const EmployeeTable = () => {
               icon={<DeleteTwoTone />}
               onClick={() => {
                 setDeleteRow(record.UniqueCode);
+                setEmployeeSelected(record);
               }}></Button>
           </div>
         );
@@ -160,10 +158,13 @@ const EmployeeTable = () => {
   }, [deleteRow]);
   const handleDelete = async () => {
     console.log('Index to delete', deleteRow);
-    const { data, error } = await supabase
+    const { data:dataEmp, error } = await supabase
       .from('employee')
       .delete()
       .eq('UniqueCode', deleteRow);
+
+
+   
     if (error) {
       message.error(error.message);
     }

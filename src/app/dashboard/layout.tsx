@@ -135,9 +135,8 @@ export default function DashboardLayout({
             onClick={() => {
               router.push('/');
             }}
-            className={`cursor-pointer ${
-              collapsed ? 'hidden' : 'lg:block hidden'
-            } `}>
+            className={`cursor-pointer ${collapsed ? 'hidden' : 'lg:block hidden'
+              } `}>
             BKU Clinic
           </div>
           <Button
